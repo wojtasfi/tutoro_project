@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html class="full" lang="en" xmlns:th="http://www.thymeleaf.org"
+>
+<!-- Make sure the <html> tag is set to the .full CSS class. Change the background image in the full.css file. -->
+
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+
+    <title>Tutor</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+
+    <link href="/css/the-big-picture.css" rel="stylesheet"/>
+    <link href="/css/tutors.css" rel="stylesheet"/>
+
+</head>
+
+<body>
+<div id="nav" th:include="page :: navbar"></div>
+
+<div class="container">
+    <div class="top-of-form">
+
+        <form class="well well-small" role="search" th:action="@{/tutors/search}" method="post">
+            <div class="row">
+                <div class="col-sm-3 col-md-3">
+                    <legend><span th:text="${tutor.username}"></span>`s students</legend>
+                    <input type="hidden"
+                           th:name="${_csrf.parameterName}"
+                           th:value="${_csrf.token}"/>
+
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="text"/>
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="tutors">
+        <ul th:each="student : ${students}">
+            <li>
+                <div class="well well-small">
+                    <div class="row">
+                        <div class="col-sm-2 col-md-2">
+                            <img id="profilepic" th:src="@{/picture/profilepic/(username=${student.username})}"
+                                 height="140" width="100"
+                                 class="img-rounded img-responsive"/>
+                        </div>
+                        <div class="col-sm-2 col-md-2">
+                            <h4>
+                                <span th:text="${student.username}"></span></h4>
+                            <small><span th:text="${student.name}"></span> <span th:text="${student.lastName}"></span>
+                            </small>
+                        </div>
+                        <div class="col-sm-4 col-md-4">
+                            <span th:text="${student.story}"></span>
+                        </div>
+                        <div class="col-sm-2 col-md-2">
+                            <strong>Learning skills:</strong>
+                            <ul th:each="skill : ${tutor.skills}" style="display:inline;">
+                                <li style="display:inline-block;">
+                                    <span th:text="${skill.name} "></span>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div class="col-sm-2 col-md-2">
+                            <a th:href="@{/relations/showStudent(teacher=${tutor.username}, student=${student.username})}"
+                               class="btn btn-primary pull-right">Show student</a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div id="copy" th:include="page :: copy"></div>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,12 @@
+body{padding-top:30px;}
+
+
+small {
+display: block;
+line-height: 1.428571429;
+color: #999;
+}
+
+.top-of-form {
+padding-top: 100px;
+}
