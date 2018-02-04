@@ -23,6 +23,7 @@
     <module>zipkinserver</module>
     <module>authentication-service</module>
     <module>tutoroservice</module>
+    <module>relation-service</module>
   </modules>
   <build>
     <plugins>

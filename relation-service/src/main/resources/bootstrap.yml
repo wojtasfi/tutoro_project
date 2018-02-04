@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: relation-service
+  profiles:
+    active:
+      default
+  cloud:
+    config:
+      enabled: true

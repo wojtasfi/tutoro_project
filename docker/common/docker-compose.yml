@@ -75,3 +75,30 @@ services:
     command: syslog://logs6.papertrailapp.com:36814
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+  neo4j:
+    image: neo4j:3.0
+    ports:
+      - "17474:7474"
+    volumes:                  ## adds folder with login/password
+      - ./db/dbms:/data/dbms
+
+  relation-service:
+      image: wociechf/relation-service:tutoro
+      ports:
+        - "8085:8085"
+      environment:
+        PROFILE: "default"
+        SERVER_PORT: "8085"
+        CONFIGSERVER_URI: "http://configserver:8888"
+        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+        ZIPKIN_URI: "http://zipkin:9411"
+        KAFKASERVER_URI: "kafkaserver"
+        ZKSERVER_URI: "kafkaserver"
+        DATABASESERVER_PORT: "5432"
+        EUREKASERVER_PORT:   "8761"
+        CONFIGSERVER_PORT:   "8888"
+        ZUULSERVER_PORT:     "5555"
+        KAFKASERVER_PORT:    "2181"
+        REDIS_PORT:          "6379"
+        ZIPKIN_PORT:         "9411"
+        ENCRYPT_KEY:       "IMSYMMETRIC"
