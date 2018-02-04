@@ -1,7 +1,7 @@
 package com.relationservice.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.relationservice.entities.db.LearnRelation;
+import com.relationservice.entities.db.LearnRelationRawData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +31,9 @@ public class MessageReceiver {
     public void receiveMessage(String learnRelationJson) {
         LOGGER.info("Received <" + learnRelationJson + ">");
 
-        LearnRelation learningRelation = null;
+        LearnRelationRawData learningRelation = null;
         try {
-            learningRelation = mapper.readValue(learnRelationJson, LearnRelation.class);
+            learningRelation = mapper.readValue(learnRelationJson, LearnRelationRawData.class);
         } catch (IOException e) {
             LOGGER.error("Could not read json value");
         }
@@ -42,10 +42,10 @@ public class MessageReceiver {
     }
 
     @Transactional
-    private void handleNewRelation(LearnRelation learningRelation) {
+    private void handleNewRelation(LearnRelationRawData learnRelationRawData) {
         LOGGER.info("Saving to graph");
-        tutorNodeService.saveLearnRelation(learningRelation);
-        learnRelationService.saveRelation(learningRelation);
+        tutorNodeService.processLearnRelationRawData(learnRelationRawData);
+        learnRelationService.saveRelation(learnRelationRawData);
 
     }
 

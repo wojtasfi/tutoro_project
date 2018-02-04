@@ -14,25 +14,21 @@ import java.time.LocalDate;
 /**
  * Created by wojciech on 09.07.17.
  */
-@RelationshipEntity(type = "TEACHING")
+@RelationshipEntity(type = "IS_LEARNING")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeachingRelationship {
+public class IsLearningRelationship {
 
     @GraphId
     private Long id;
-
-    @StartNode
-    private TutorNode teacher;
-
     @EndNode
+    private SkillNode skill;
+    @StartNode
     private TutorNode student;
-
-    private String skill;
-    private Long skillId;
 
     private LocalDate startDate;
     private LocalDate endDate;
+
 }

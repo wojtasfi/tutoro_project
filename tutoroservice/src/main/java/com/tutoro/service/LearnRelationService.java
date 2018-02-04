@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tutoro.dao.LearnRelationRepository;
 import com.tutoro.dao.SkillRepository;
 import com.tutoro.dao.TutorRepository;
-import com.tutoro.dto.LearnRelationDTO;
+import com.tutoro.dto.LearnRelationRawDataDTO;
 import com.tutoro.entities.LearnRelation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +37,7 @@ public class LearnRelationService {
 
     public LearnRelation saveLearnRelation(LearnRelation learnRelation) {
         LearnRelation newLearnRelation = learnRelationRepository.save(learnRelation);
-        LearnRelationDTO dto = LearnRelationDTO.createFromLearnRelation(newLearnRelation);
+        LearnRelationRawDataDTO dto = LearnRelationRawDataDTO.createFromLearnRelation(newLearnRelation);
         try {
             sendMessage(dto);
         } catch (JsonProcessingException e) {
@@ -46,7 +46,7 @@ public class LearnRelationService {
         return newLearnRelation;
     }
 
-    private void sendMessage(final LearnRelationDTO learnRelation) throws JsonProcessingException {
+    private void sendMessage(final LearnRelationRawDataDTO learnRelation) throws JsonProcessingException {
         LOGGER.info("Sending message to create relation: " + learnRelation.getSkill());
         String json = mapper.writeValueAsString(learnRelation);
         kafkaTemplate.send("learnRelationAdded", json);

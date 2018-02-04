@@ -1,16 +1,14 @@
 package com.relationservice.service;
 
-import com.relationservice.dao.neo4j.LearningRelationshipRepository;
-import com.relationservice.dao.neo4j.TeachingRelationshipRepository;
-import com.relationservice.dao.neo4j.TutorNodeRepository;
-import com.relationservice.entities.db.LearnRelation;
-import com.relationservice.entities.neo4j.LearningRelationship;
-import com.relationservice.entities.neo4j.TeachingRelationship;
-import com.relationservice.entities.neo4j.TutorNode;
+import com.relationservice.dao.neo4j.*;
+import com.relationservice.entities.db.LearnRelationRawData;
+import com.relationservice.entities.neo4j.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 /**
  * Created by wojciech on 28.06.17.
@@ -23,63 +21,140 @@ public class TutorNodeService {
     private TutorNodeRepository tutorNodeRepository;
 
     @Autowired
+    private SkillNodeRepository skillNodeRepository;
+
+    @Autowired
     private LearningRelationshipRepository learningRelationshipRepository;
 
     @Autowired
     private TeachingRelationshipRepository teachingRelationshipRepository;
 
-    public void saveLearnRelation(LearnRelation learnRelation) {
+    @Autowired
+    private IsTeachingRelationshipRepository isTeachingRelationshipRepository;
 
-        TutorNode student;
-        TutorNode teacher;
+    @Autowired
+    private IsLearningRelationshipRepository isLearningRelationshipRepository;
 
-        if (!nodeExists(learnRelation.getStudentUsername())) {
-            LOGGER.info("{} does not exists. Creating", learnRelation.getStudentUsername());
-            student = new TutorNode();
-            student.setName(learnRelation.getStudentName());
-            student.setLastName(learnRelation.getStudentLastName());
-            student.setEmail(learnRelation.getStudentEmail());
-            student.setSkype(learnRelation.getStudentSkype());
-            student.setUsername(learnRelation.getStudentUsername());
-            tutorNodeRepository.save(student);
+    public void processLearnRelationRawData(LearnRelationRawData learnRelationRawData) {
+
+        TutorNode student = initStudentNode(learnRelationRawData);
+        TutorNode teacher = initTeacherNode(learnRelationRawData);
+
+        createTeachingRelationship(learnRelationRawData, student, teacher);
+        createLearningRelationship(learnRelationRawData, student, teacher);
+
+        SkillNode skill = initSkillNode(learnRelationRawData);
+        LocalDate startDate = learnRelationRawData.getStartDate();
+
+        createIsLearningRelation(student, skill, startDate);
+        createIsTeachingRelation(teacher, skill, startDate);
+    }
+
+    private void createIsTeachingRelation(TutorNode teacher, SkillNode skill, LocalDate startDate) {
+        IsTeachingRelationship isTeachingRelationship = IsTeachingRelationship.builder()
+                .teacher(teacher)
+                .skill(skill)
+                .startDate(startDate)
+                .build();
+
+        isTeachingRelationshipRepository.save(isTeachingRelationship);
+    }
+
+    private void createIsLearningRelation(TutorNode student, SkillNode skill, LocalDate startDate) {
+        IsLearningRelationship isLearningRelationship = IsLearningRelationship.builder()
+                .student(student)
+                .skill(skill)
+                .startDate(startDate)
+                .build();
+
+        isLearningRelationshipRepository.save(isLearningRelationship);
+    }
+
+    private SkillNode initSkillNode(LearnRelationRawData learnRelationRawData) {
+        String skillName = learnRelationRawData.getSkill().toLowerCase();
+
+        SkillNode skillNode;
+
+        if (skillExists(skillName)) {
+            LOGGER.info("Skill {} exists.", skillName);
+            skillNode = skillNodeRepository.findByName(skillName);
         } else {
-            LOGGER.info("{} does exists.", learnRelation.getStudentUsername());
-
-            student = tutorNodeRepository.findByUsername(learnRelation.getStudentUsername());
+            LOGGER.info("Skill {} does not exists. Creating.", skillName);
+            skillNode = SkillNode.builder()
+                    .name(skillName)
+                    .build();
+            skillNodeRepository.save(skillNode);
         }
 
-        if (!nodeExists(learnRelation.getTeacherUsername())) {
-            LOGGER.info("{} does not exists. Creating", learnRelation.getTeacherUsername());
+        return skillNode;
+    }
 
-            teacher = new TutorNode();
-            teacher.setName(learnRelation.getTeacherName());
-            teacher.setLastName(learnRelation.getTeacherLastName());
-            teacher.setEmail(learnRelation.getTeacherEmail());
-            teacher.setSkype(learnRelation.getTeacherSkype());
-            teacher.setUsername(learnRelation.getTeacherUsername());
-            tutorNodeRepository.save(teacher);
-        } else {
-            LOGGER.info("{} doeas not exists. Creating", learnRelation.getTeacherUsername());
+    private boolean skillExists(String skillName) {
+        return skillNodeRepository.findByName(skillName) != null;
+    }
 
-            teacher = tutorNodeRepository.findByUsername(learnRelation.getTeacherUsername());
-        }
+    private void createLearningRelationship(LearnRelationRawData learnRelationRawData, TutorNode student, TutorNode teacher) {
+        LearningFromRelationship learningFromRelationship = LearningFromRelationship.builder()
+                .skill(learnRelationRawData.getSkill())
+                .skillId(learnRelationRawData.getSkillId())
+                .student(student)
+                .teacher(teacher)
+                .build();
+        LOGGER.info("Saving learning relationship with id {}", learningFromRelationship.getId());
 
-        TeachingRelationship teachingRelationship = new TeachingRelationship();
-        teachingRelationship.setSkill(learnRelation.getSkill());
-        teachingRelationship.setSkillId(learnRelation.getSkillId());
-        teachingRelationship.setStudent(student);
-        teachingRelationship.setTeacher(teacher);
+        learningRelationshipRepository.save(learningFromRelationship);
+    }
+
+    private void createTeachingRelationship(LearnRelationRawData learnRelationRawData, TutorNode student, TutorNode teacher) {
+        TeachingRelationship teachingRelationship = TeachingRelationship.builder()
+                .skill(learnRelationRawData.getSkill())
+                .skillId(learnRelationRawData.getSkillId())
+                .student(student)
+                .teacher(teacher)
+                .build();
         LOGGER.info("Saving teaching relationship with id {}", teachingRelationship.getId());
         teachingRelationshipRepository.save(teachingRelationship);
+    }
 
-        LearningRelationship learningRelationship = new LearningRelationship();
-        learningRelationship.setSkill(learnRelation.getSkill());
-        learningRelationship.setSkillId(learnRelation.getSkillId());
-        learningRelationship.setStudent(student);
-        learningRelationship.setTeacher(teacher);
-        LOGGER.info("Saving learning relationship with id {}", learningRelationship.getId());
+    private TutorNode initTeacherNode(LearnRelationRawData learnRelationRawData) {
+        TutorNode teacher;
+        if (!nodeExists(learnRelationRawData.getTeacherUsername())) {
+            LOGGER.info("{} does not exists. Creating", learnRelationRawData.getTeacherUsername());
 
-        learningRelationshipRepository.save(learningRelationship);
+            teacher = TutorNode.builder()
+                    .name(learnRelationRawData.getTeacherName())
+                    .lastName(learnRelationRawData.getTeacherLastName())
+                    .email(learnRelationRawData.getTeacherEmail())
+                    .skype(learnRelationRawData.getTeacherSkype())
+                    .username(learnRelationRawData.getTeacherUsername())
+                    .build();
+            tutorNodeRepository.save(teacher);
+        } else {
+            LOGGER.info("{} doeas not exists. Creating", learnRelationRawData.getTeacherUsername());
+
+            teacher = tutorNodeRepository.findByUsername(learnRelationRawData.getTeacherUsername());
+        }
+        return teacher;
+    }
+
+    private TutorNode initStudentNode(LearnRelationRawData learnRelationRawData) {
+        TutorNode student;
+        if (!nodeExists(learnRelationRawData.getStudentUsername())) {
+            LOGGER.info("{} does not exists. Creating", learnRelationRawData.getStudentUsername());
+            student = TutorNode.builder()
+                    .name(learnRelationRawData.getStudentName())
+                    .lastName(learnRelationRawData.getStudentLastName())
+                    .email(learnRelationRawData.getStudentEmail())
+                    .skype(learnRelationRawData.getStudentSkype())
+                    .username(learnRelationRawData.getStudentUsername())
+                    .build();
+            tutorNodeRepository.save(student);
+        } else {
+            LOGGER.info("{} does exists.", learnRelationRawData.getStudentUsername());
+
+            student = tutorNodeRepository.findByUsername(learnRelationRawData.getStudentUsername());
+        }
+        return student;
     }
 
     private boolean nodeExists(String username) {

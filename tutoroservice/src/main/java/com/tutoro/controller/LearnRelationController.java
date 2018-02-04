@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -48,10 +49,13 @@ public class LearnRelationController {
         Tutor teacher = tutorService.findOne(skill.getTutor().getId());
         Tutor student = tutorService.findByUsername(studentName);
 
-        LearnRelation learnRelation = new LearnRelation();
-        learnRelation.setTeacher(teacher);
-        learnRelation.setStudent(student);
-        learnRelation.setSkill(skill);
+        LearnRelation learnRelation = LearnRelation.builder()
+                .teacher(teacher)
+                .student(student)
+                .skill(skill)
+                .startDate(LocalDate.now())
+                .endDate(null)
+                .build();
 
         learnRelationService.saveLearnRelation(learnRelation);
         model.addAttribute("tutor", student);

@@ -2,7 +2,7 @@ package com.relationservice.service;
 
 
 import com.relationservice.dao.db.LearnRelationRepository;
-import com.relationservice.entities.db.LearnRelation;
+import com.relationservice.entities.db.LearnRelationRawData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +19,9 @@ public class LearnRelationService {
     private LearnRelationRepository learnRelationRepository;
 
 
-    public void saveRelation(LearnRelation learnRelation) {
-        LOGGER.info("Saving relation for {}", learnRelation.getTeacherUsername());
-        learnRelationRepository.save(learnRelation);
+    public void saveRelation(LearnRelationRawData learnRelationRawData) {
+        LOGGER.info("Saving relation raw data for {}", learnRelationRawData.getTeacherUsername());
+        learnRelationRepository.save(learnRelationRawData);
 
     }
 

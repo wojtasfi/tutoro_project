@@ -14,20 +14,18 @@ import java.time.LocalDate;
 /**
  * Created by wojciech on 09.07.17.
  */
-@RelationshipEntity(type = "TEACHING")
+@RelationshipEntity(type = "LEARNING_FROM")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TeachingRelationship {
+public class LearningFromRelationship {
 
     @GraphId
     private Long id;
-
-    @StartNode
-    private TutorNode teacher;
-
     @EndNode
+    private TutorNode teacher;
+    @StartNode
     private TutorNode student;
 
     private String skill;
@@ -35,4 +33,5 @@ public class TeachingRelationship {
 
     private LocalDate startDate;
     private LocalDate endDate;
+
 }
