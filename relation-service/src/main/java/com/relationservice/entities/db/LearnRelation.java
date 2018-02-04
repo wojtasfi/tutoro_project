@@ -1,5 +1,7 @@
 package com.relationservice.entities.db;
 
+import lombok.ToString;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,6 +11,7 @@ import javax.persistence.Id;
  * Created by wojciech on 28.06.17.
  */
 @Entity
+@ToString
 public class LearnRelation {
 
     @Id
@@ -31,28 +34,6 @@ public class LearnRelation {
     private Long skillId;
 
     private final String LEARN_RELATION = "LEARN_RELATION";
-
-    @Override
-    public String toString() {
-        return "LearnRelation{" +
-                "id=" + id +
-                ", teacherId=" + teacherId +
-                ", teacherName='" + teacherName + '\'' +
-                ", teacherLastName='" + teacherLastName + '\'' +
-                ", teacherUsername='" + teacherUsername + '\'' +
-                ", teacherEmail='" + teacherEmail + '\'' +
-                ", teacherSkype='" + teacherSkype + '\'' +
-                ", studentId=" + studentId +
-                ", studentName='" + studentName + '\'' +
-                ", studentLastName='" + studentLastName + '\'' +
-                ", studentUsername='" + studentUsername + '\'' +
-                ", studentEmail='" + studentEmail + '\'' +
-                ", studentSkype='" + studentSkype + '\'' +
-                ", skill='" + skill + '\'' +
-                ", skillId=" + skillId +
-                ", LEARN_RELATION='" + LEARN_RELATION + '\'' +
-                '}';
-    }
 
     public Long getId() {
         return id;

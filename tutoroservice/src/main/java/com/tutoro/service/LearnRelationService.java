@@ -47,7 +47,7 @@ public class LearnRelationService {
     }
 
     private void sendMessage(final LearnRelationDTO learnRelation) throws JsonProcessingException {
-
+        LOGGER.info("Sending message to create relation: " + learnRelation.getSkill());
         String json = mapper.writeValueAsString(learnRelation);
         kafkaTemplate.send("learnRelationAdded", json);
 

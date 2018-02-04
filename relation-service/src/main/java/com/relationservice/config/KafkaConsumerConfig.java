@@ -1,7 +1,7 @@
 package com.relationservice.config;
 
-import com.fasterxml.jackson.databind.deser.std.StringDeserializer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +17,7 @@ import java.util.Map;
 @Configuration
 public class KafkaConsumerConfig {
 
-    @Value("${kafka.bootstrap-servers}")
+    @Value("${kafka.bootstrapAddress}")
     private String bootstrapAddress;
 
     private final String groupId = "relation-service";

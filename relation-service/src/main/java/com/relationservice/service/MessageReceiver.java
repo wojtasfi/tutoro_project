@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 
@@ -28,17 +29,24 @@ public class MessageReceiver {
 
     @KafkaListener(topics = "learnRelationAdded")
     public void receiveMessage(String learnRelationJson) {
+        LOGGER.info("Received <" + learnRelationJson + ">");
 
-        LearnRelation learnRelation = null;
+        LearnRelation learningRelation = null;
         try {
-            learnRelation = mapper.readValue(learnRelationJson, LearnRelation.class);
+            learningRelation = mapper.readValue(learnRelationJson, LearnRelation.class);
         } catch (IOException e) {
             LOGGER.error("Could not read json value");
         }
-        learnRelationService.saveRelation(learnRelation);
-        tutorNodeService.saveLearnRelation(learnRelation);
+        handleNewRelation(learningRelation);
 
-        LOGGER.info("Received <" + learnRelation + ">");
+    }
+
+    @Transactional
+    private void handleNewRelation(LearnRelation learningRelation) {
+        LOGGER.info("Saving to graph");
+        tutorNodeService.saveLearnRelation(learningRelation);
+        learnRelationService.saveRelation(learningRelation);
+
     }
 
 }
