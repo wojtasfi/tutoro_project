@@ -10,7 +10,7 @@ import com.tutoro.entities.LearnRelation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.JmsTemplate;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 /**
@@ -31,7 +31,7 @@ public class LearnRelationService {
     private LearnRelationRepository learnRelationRepository;
 
     @Autowired
-    private JmsTemplate jmsTemplate;
+    private KafkaTemplate<String, String> kafkaTemplate;
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -49,7 +49,7 @@ public class LearnRelationService {
     private void sendMessage(final LearnRelationDTO learnRelation) throws JsonProcessingException {
 
         String json = mapper.writeValueAsString(learnRelation);
-        jmsTemplate.convertAndSend("RelationEvent", json);
+        kafkaTemplate.send("learnRelationAdded", json);
 
     }
 }
