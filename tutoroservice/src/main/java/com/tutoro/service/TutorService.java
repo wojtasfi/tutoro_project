@@ -97,6 +97,9 @@ public class TutorService {
         Tutor teacherTutor = tutorRepository.findByUsername(teacher);
         Tutor studentTutor = tutorRepository.findByUsername(student);
 
+        if (teacherTutor == null || studentTutor == null) {
+            return null;
+        }
         Set<Skill> toughtSkills = new HashSet<>();
 
         for (LearnRelation relation : studentTutor.getStudentRelations()) {

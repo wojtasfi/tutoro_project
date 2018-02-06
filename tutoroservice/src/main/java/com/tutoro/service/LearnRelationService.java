@@ -59,4 +59,8 @@ public class LearnRelationService {
         return learnRelationRepository.findByTeacherAndStudentAndSkill(teacher, student, skill) != null;
 
     }
+
+    public LearnRelation getById(Long relationId) {
+        return learnRelationRepository.findOne(relationId);
+    }
 }

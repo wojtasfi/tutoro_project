@@ -97,8 +97,8 @@ services:
     volumes:                  ## adds folder with login/password
       - ./db/dbms:/data/dbms
 
-  relation-service:
-      image: wociechf/relation-service:tutoro
+  graph-relation-service:
+      image: wociechf/graph-relation-service:tutoro
       ports:
         - "8085:8085"
       environment:
