@@ -49,6 +49,10 @@ public class LearnRelationController {
         Tutor teacher = tutorService.findOne(skill.getTutor().getId());
         Tutor student = tutorService.findByUsername(studentName);
 
+        if (learnRelationService.learnRelationExists(skill, teacher, student)) {
+            throw new IllegalStateException("Relationship already exists");
+        }
+
         LearnRelation learnRelation = LearnRelation.builder()
                 .teacher(teacher)
                 .student(student)

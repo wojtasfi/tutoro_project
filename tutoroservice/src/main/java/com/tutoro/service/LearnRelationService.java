@@ -7,6 +7,8 @@ import com.tutoro.dao.SkillRepository;
 import com.tutoro.dao.TutorRepository;
 import com.tutoro.dto.LearnRelationRawDataDTO;
 import com.tutoro.entities.LearnRelation;
+import com.tutoro.entities.Skill;
+import com.tutoro.entities.Tutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +52,11 @@ public class LearnRelationService {
         LOGGER.info("Sending message to create relation: " + learnRelation.getSkill());
         String json = mapper.writeValueAsString(learnRelation);
         kafkaTemplate.send("learnRelationAdded", json);
+
+    }
+
+    public Boolean learnRelationExists(Skill skill, Tutor teacher, Tutor student) {
+        return learnRelationRepository.findByTeacherAndStudentAndSkill(teacher, student, skill) != null;
 
     }
 }
