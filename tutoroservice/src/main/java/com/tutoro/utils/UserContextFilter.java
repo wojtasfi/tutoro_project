@@ -1,4 +1,4 @@
-package com.authentication.utils;
+package com.tutoro.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +19,8 @@ public class UserContextFilter implements Filter {
 
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
 
+        logger.debug("I am entering the tutoro service id with auth token: ", httpServletRequest.getHeader("Authorization"));
+
         UserContextHolder.getContext().setUserId(httpServletRequest.getHeader(UserContext.USER_ID));
         UserContextHolder.getContext().setAuthToken(httpServletRequest.getHeader(UserContext.AUTH_TOKEN));
 
@@ -26,8 +28,10 @@ public class UserContextFilter implements Filter {
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {}
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
 
     @Override
-    public void destroy() {}
+    public void destroy() {
+    }
 }
