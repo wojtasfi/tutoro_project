@@ -1,10 +1,9 @@
 spring:
   application:
-    name: tutoroservice
+    name: authentication-service
   profiles:
     active:
       default
   cloud:
     config:
       enabled: true
-

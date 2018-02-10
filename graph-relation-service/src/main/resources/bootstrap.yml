@@ -1,6 +1,6 @@
 spring:
   application:
-    name: relation-service
+    name: graph-relation-service
   profiles:
     active:
       default

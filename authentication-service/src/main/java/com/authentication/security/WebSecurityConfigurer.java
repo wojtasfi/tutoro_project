@@ -10,13 +10,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 @Configuration
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
-        @Override
+    @Override
     @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
-   @Override
+    @Override
     @Bean
     public UserDetailsService userDetailsServiceBean() throws Exception {
         return super.userDetailsServiceBean();
@@ -27,8 +27,6 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .inMemoryAuthentication()
-                .withUser("john.carnell").password("password1").roles("USER")
-                .and()
-                .withUser("william.woodward").password("password2").roles("USER", "ADMIN");
+                .withUser("wfigas").password("pol").roles("TUTOR");
     }
 }

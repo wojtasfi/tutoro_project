@@ -6,7 +6,6 @@ import com.tutoro.service.TutorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +29,7 @@ public class HomeRest {
     private TutorService tutorService;
 
     @RequestMapping(method = GET)
-    public String home(Model model) {
+    public String home() {
 
         List<Tutor> tutors = tutorService.findAll();
         List<Skill> skills = new ArrayList<>();

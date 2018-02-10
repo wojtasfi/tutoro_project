@@ -2,16 +2,15 @@ package com.tutoro;
 
 import com.tutoro.dao.TutorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.jms.annotation.EnableJms;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
 @EnableDiscoveryClient
-@EnableJms
+@EnableResourceServer
 @SpringBootApplication
 public class TutoroApplication implements ApplicationRunner {
 
