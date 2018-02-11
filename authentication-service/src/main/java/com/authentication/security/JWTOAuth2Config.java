@@ -48,6 +48,7 @@ public class JWTOAuth2Config extends AuthorizationServerConfigurerAdapter {
                 .tokenEnhancer(tokenEnhancerChain)                   //JWT
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService);
+
     }
 
 

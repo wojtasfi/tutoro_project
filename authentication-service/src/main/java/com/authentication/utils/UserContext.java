@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserContext {
-    public static final String AUTH_TOKEN     = "tmx-auth-token";
+    public static final String AUTH_TOKEN = "auth-token";
     public static final String USER_ID = "user-id";
 
     private String authToken= new String();

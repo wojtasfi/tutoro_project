@@ -1,5 +1,6 @@
 package com.tutoro.rest;
 
+import com.tutoro.dto.TutorDto;
 import com.tutoro.entities.Skill;
 import com.tutoro.entities.Tutor;
 import com.tutoro.service.SkillService;
@@ -52,6 +53,18 @@ public class TutorRest {
         Tutor tutor = tutorService.findByUsername(username);
         cleanSkills(tutor);
         return tutor;
+
+    }
+
+    @GetMapping(value = "tutor/{username}")
+    public TutorDto getTutor(@PathVariable("username") String username) {
+
+        Tutor tutor = tutorService.findByUsername(username);
+        cleanSkills(tutor);
+
+        return TutorDto.builder()
+                .id(tutor.getId())
+                .userName(tutor.getUsername()).build();
 
     }
 
