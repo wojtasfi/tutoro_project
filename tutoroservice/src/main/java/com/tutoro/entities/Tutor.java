@@ -1,6 +1,9 @@
 package com.tutoro.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -10,6 +13,9 @@ import java.util.Set;
  * Created by wojci on 4/15/2017.
  */
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Tutor {
 
     @Id
@@ -62,10 +68,6 @@ public class Tutor {
                 ", story='" + story + '\'' +
                 ", picture='" + profilePic + '\'' +
                 '}';
-    }
-
-    public Tutor() {
-
     }
 
     public String getStory() {

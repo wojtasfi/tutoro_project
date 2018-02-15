@@ -1,4 +1,4 @@
-package com.authentication.model;
+package com.tutoro.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

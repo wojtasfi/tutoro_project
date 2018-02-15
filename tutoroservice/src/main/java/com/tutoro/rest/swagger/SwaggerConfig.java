@@ -90,5 +90,15 @@ public class SwaggerConfig {
                 .paths(PathSelectors.ant("/tutors/*"))
                 .build();
     }
+
+    @Bean
+    public Docket users() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("users rest")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.tutoro.rest"))
+                .paths(PathSelectors.ant("/users/*"))
+                .build();
+    }
 }
 

@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.Set;
@@ -31,21 +30,6 @@ public class TutorRest {
     private SkillService skillService;
 
     private static Logger LOGGER = LoggerFactory.getLogger(TutorRest.class);
-
-
-    @PostMapping(value = "/register")
-    public ResponseEntity<String> registerNewTutor(@RequestBody Tutor tutor) {
-
-        if (!tutorService.checkIfTutorExists(tutor.getUsername())) {
-            tutorService.saveTutor(tutor);
-            return ResponseEntity.created(URI.create("/tutors/profile/" + tutor.getUsername())).build();
-        } else {
-
-            return ResponseEntity.badRequest().body("Duplicated tutor");
-        }
-
-
-    }
 
     @GetMapping(value = "profile/{username}")
     public Tutor showProfile(@PathVariable("username") String username) {

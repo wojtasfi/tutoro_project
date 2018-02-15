@@ -1,4 +1,4 @@
-package com.tutoro;
+package com;
 
 import com.tutoro.dao.TutorRepository;
 import com.tutoro.utils.UserContextInterceptor;

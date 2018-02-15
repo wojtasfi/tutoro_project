@@ -112,6 +112,8 @@
 			<artifactId>postgresql</artifactId>
 			<version>9.1-901.jdbc4</version>
 		</dependency>
+
+
         <!-- https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity4 -->
 
     </dependencies>
@@ -131,7 +133,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<start-class>com.tutoro.TutoroApplication</start-class>
+        <start-class>com.TutoroApplication</start-class>
 		<java.version>1.8</java.version>
 		<docker.image.name>wociechf/tutoro</docker.image.name>
 		<docker.image.tag>tutoro</docker.image.tag>
