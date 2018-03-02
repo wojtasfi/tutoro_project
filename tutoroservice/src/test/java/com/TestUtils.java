@@ -41,4 +41,15 @@ public class TestUtils {
     public Skill findSkillByName(String name) {
         return skillRepository.findByName(name);
     }
+
+    public void prepareRandomSkills(int numebrOfSkills, Long tutorId) {
+        for (int i = 0; i <= numebrOfSkills; i++) {
+            skillRepository.save(Skill.builder()
+                    .name("Test" + i)
+                    .description("Description of " + i)
+                    .tutorId(tutorId)
+                    .build());
+        }
+
+    }
 }
