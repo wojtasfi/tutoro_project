@@ -12,7 +12,8 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
         http.antMatcher("/**")
                 .authorizeRequests()
-                .antMatchers("/", "/env", "/info", "/users/register")
+                .antMatchers("/", "/env", "/info", "/users/register",
+                        "/users/validate/username", "/users/validate/email", "users/verify/email")
                 .permitAll()
                 .anyRequest()
                 .authenticated();

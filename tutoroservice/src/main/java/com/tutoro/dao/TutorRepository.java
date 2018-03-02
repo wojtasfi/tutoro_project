@@ -12,4 +12,6 @@ import org.springframework.stereotype.Repository;
 public interface TutorRepository extends CrudRepository<Tutor, Long> {
 
     Tutor findByUsername(String username);
+
+    Tutor findByEmail(String email);
 }

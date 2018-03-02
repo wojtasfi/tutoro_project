@@ -141,4 +141,12 @@ public class TutorService {
 
         return students;
     }
+
+    public boolean checkIfEmailExists(String email) {
+        Tutor tutor = tutorRepository.findByEmail(email);
+        if (tutor == null) {
+            return false;
+        }
+        return true;
+    }
 }
