@@ -174,7 +174,6 @@ public class TutorService {
             for (LearnRelation relation : learnRelationRepository.findByStudentId(student.getId())) {
 
                 Tutor teacher = tutorRepository.findOne(relation.getTeacherId());
-
                 if (teacher.getUsername().equals(username)) {
                     studentSkills.add(skillRepository.getSkillById(relation.getSkillId()));
                 }
@@ -186,6 +185,7 @@ public class TutorService {
                     .build();
 
             studentDto.setLearningSkills(studentSkills);
+            students.add(studentDto);
         }
 
         return students;

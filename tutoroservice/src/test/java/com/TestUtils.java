@@ -2,10 +2,13 @@ package com;
 
 
 import com.tutoro.dao.*;
+import com.tutoro.entities.LearnRelation;
 import com.tutoro.entities.Skill;
 import com.tutoro.entities.Tutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 @Service
 public class TestUtils {
@@ -50,6 +53,25 @@ public class TestUtils {
                     .tutorId(tutorId)
                     .build());
         }
+
+    }
+
+    public Skill prepareSkill(String name, Long tutorId) {
+        return skillRepository.save(Skill.builder()
+                .name(name)
+                .description(name)
+                .tutorId(tutorId)
+                .build());
+    }
+
+    public LearnRelation createLearnRealtion(Long studentId, Long teacherId, Long skillId) {
+        LearnRelation learnRelation = LearnRelation.builder()
+                .skillId(skillId)
+                .teacherId(teacherId)
+                .studentId(studentId)
+                .startDate(LocalDate.now())
+                .build();
+        return learnRelationRepository.save(learnRelation);
 
     }
 }

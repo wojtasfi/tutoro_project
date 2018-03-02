@@ -25,7 +25,8 @@ public class Skill {
     private String name;
     private String description;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER,
+            targetClass = HashSet.class)
     private Set<String> tags = new HashSet<>();
 
     private Long tutorId;
