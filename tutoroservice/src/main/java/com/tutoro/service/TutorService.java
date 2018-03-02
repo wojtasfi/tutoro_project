@@ -40,6 +40,7 @@ public class TutorService {
     public void addSkill(Skill skill, Tutor tutor) {
         tutor.addSkill(skill);
         tutorRepository.save(tutor);
+        skillRepository.save(skill);
     }
 
     public boolean checkIfTutorExists(String username) {

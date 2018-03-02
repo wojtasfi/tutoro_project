@@ -63,7 +63,7 @@ public class SkillRest {
         LOGGER.info(skill.toString());
 
         tutorService.addSkill(skill, skill.getTutor());
-        skillService.saveSkill(skill);
+//        skillService.saveSkill(skill);
 
         return ResponseEntity.created(URI.create("/skills/skill" + skill.getId())).build();
 
