@@ -1,7 +1,7 @@
 package com.tutoro.rest;
 
 import com.tutoro.entities.Skill;
-import com.tutoro.entities.Tutor;
+import com.tutoro.service.SkillService;
 import com.tutoro.service.TutorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -28,15 +28,13 @@ public class HomeRest {
     @Autowired
     private TutorService tutorService;
 
+    @Autowired
+    private SkillService skillService;
+
     @RequestMapping(method = GET)
     public String home() {
 
-        List<Tutor> tutors = tutorService.findAll();
-        List<Skill> skills = new ArrayList<>();
-
-        for (Tutor tutor : tutors) {
-            skills.addAll(tutor.getSkills());
-        }
+        List<Skill> skills = skillService.findAll().stream().limit(100).collect(Collectors.toList());
 
         Random random = new Random();
 

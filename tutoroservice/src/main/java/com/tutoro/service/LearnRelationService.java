@@ -39,7 +39,11 @@ public class LearnRelationService {
 
     public LearnRelation saveLearnRelation(LearnRelation learnRelation) {
         LearnRelation newLearnRelation = learnRelationRepository.save(learnRelation);
-        LearnRelationRawDataDTO dto = LearnRelationRawDataDTO.createFromLearnRelation(newLearnRelation);
+        Tutor student = tutorRepository.findOne(learnRelation.getStudentId());
+        Tutor teacher = tutorRepository.findOne(learnRelation.getTeacherId());
+        Skill skill = skillRepository.findOne(learnRelation.getSkillId());
+
+        LearnRelationRawDataDTO dto = LearnRelationRawDataDTO.createFromLearnRelation(newLearnRelation, student, teacher, skill);
         try {
             sendMessage(dto);
         } catch (JsonProcessingException e) {
@@ -56,7 +60,7 @@ public class LearnRelationService {
     }
 
     public Boolean learnRelationExists(Skill skill, Tutor teacher, Tutor student) {
-        return learnRelationRepository.findByTeacherAndStudentAndSkill(teacher, student, skill) != null;
+        return learnRelationRepository.findByTeacherIdAndStudentIdAndSkillId(teacher.getId(), student.getId(), skill.getId()) != null;
 
     }
 

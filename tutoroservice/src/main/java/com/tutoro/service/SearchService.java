@@ -34,7 +34,7 @@ public class SearchService {
 
         //find entire text
         for (Tutor tutor : tutors) {
-            Set<Skill> skills = tutor.getSkills();
+            Set<Skill> skills = skillRepository.findByTutorId(tutor.getId());
             Set<Skill> searchedSkills = new HashSet<>();
 
             for (Skill skill : skills) {

@@ -1,5 +1,6 @@
 package com.tutoro.rest;
 
+import com.tutoro.dto.TeacherDto;
 import com.tutoro.entities.Tutor;
 import com.tutoro.service.TutorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,8 @@ public class TeachersRest {
     }
 
     @GetMapping(value = "/teacher")
-    public Tutor showTeacher(@RequestParam String teacherUsername,
-                             @RequestParam String studentUsername) {
-        return tutorService.findByUsernameWithSkillsTeachingToStudent(teacherUsername, studentUsername);
+    public TeacherDto showTeacher(@RequestParam String teacherUsername,
+                                  @RequestParam String studentUsername) {
+        return tutorService.findTeacherByUsernameWithSkillsTeachingToStudent(teacherUsername, studentUsername);
     }
 }

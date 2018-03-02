@@ -1,6 +1,8 @@
 package com.tutoro.dto;
 
 import com.tutoro.entities.LearnRelation;
+import com.tutoro.entities.Skill;
+import com.tutoro.entities.Tutor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,24 +38,24 @@ public class LearnRelationRawDataDTO {
     private LocalDate endDate;
 
 
-    public static LearnRelationRawDataDTO createFromLearnRelation(LearnRelation learnRelation) {
+    public static LearnRelationRawDataDTO createFromLearnRelation(LearnRelation learnRelation, Tutor student, Tutor teacher, Skill skill) {
         LearnRelationRawDataDTO dto = new LearnRelationRawDataDTO();
-        dto.teacherId = learnRelation.getTeacher().getId();
-        dto.teacherName = learnRelation.getTeacher().getName();
-        dto.teacherLastName = learnRelation.getTeacher().getLastName();
-        dto.teacherUsername = learnRelation.getTeacher().getUsername();
-        dto.teacherEmail = learnRelation.getTeacher().getEmail();
-        dto.teacherSkype = learnRelation.getTeacher().getSkype();
+        dto.teacherId = teacher.getId();
+        dto.teacherName = teacher.getName();
+        dto.teacherLastName = teacher.getLastName();
+        dto.teacherUsername = teacher.getUsername();
+        dto.teacherEmail = teacher.getEmail();
+        dto.teacherSkype = teacher.getSkype();
 
-        dto.studentId = learnRelation.getStudent().getId();
-        dto.studentName = learnRelation.getStudent().getName();
-        dto.studentLastName = learnRelation.getStudent().getLastName();
-        dto.studentUsername = learnRelation.getStudent().getUsername();
-        dto.studentEmail = learnRelation.getStudent().getEmail();
-        dto.studentSkype = learnRelation.getStudent().getSkype();
+        dto.studentId = student.getId();
+        dto.studentName = student.getName();
+        dto.studentLastName = student.getLastName();
+        dto.studentUsername = student.getUsername();
+        dto.studentEmail = student.getEmail();
+        dto.studentSkype = student.getSkype();
 
-        dto.skill = learnRelation.getSkill().getName();
-        dto.skillId = learnRelation.getSkill().getId();
+        dto.skill = skill.getName();
+        dto.skillId = skill.getId();
 
         dto.startDate = learnRelation.getStartDate();
         dto.endDate = learnRelation.getEndDate();

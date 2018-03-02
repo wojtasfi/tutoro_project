@@ -37,10 +37,11 @@ public class LearnRelationRest {
 
     @PostMapping(value = "/save")
     private ResponseEntity<String> saveLearnRelation(@RequestParam String studentName,
+                                                     @RequestParam String techareUsername,
                                                      @RequestParam Long skillId) {
 
         Skill skill = skillService.getSkillById(skillId);
-        Tutor teacher = tutorService.findOne(skill.getTutor().getId());
+        Tutor teacher = tutorService.findByUsername(techareUsername);
         Tutor student = tutorService.findByUsername(studentName);
 
         if (learnRelationService.learnRelationExists(skill, teacher, student)) {
@@ -48,9 +49,9 @@ public class LearnRelationRest {
         }
 
         LearnRelation learnRelation = LearnRelation.builder()
-                .teacher(teacher)
-                .student(student)
-                .skill(skill)
+                .teacherId(teacher.getId())
+                .studentId(student.getId())
+                .skillId(skill.getId())
                 .startDate(LocalDate.now())
                 .endDate(null)
                 .build();

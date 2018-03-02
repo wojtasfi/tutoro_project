@@ -1,10 +1,15 @@
 package com.tutoro.service;
 
+import com.tutoro.dao.LearnRelationRepository;
 import com.tutoro.dao.SkillRepository;
 import com.tutoro.dao.TutorRepository;
+import com.tutoro.dto.StudentDto;
+import com.tutoro.dto.TeacherDto;
 import com.tutoro.entities.LearnRelation;
 import com.tutoro.entities.Skill;
 import com.tutoro.entities.Tutor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +24,16 @@ import java.util.Set;
 
 @Service
 public class TutorService {
+    private static Logger LOGGER = LoggerFactory.getLogger(TutorService.class);
 
     @Autowired
-    TutorRepository tutorRepository;
+    private TutorRepository tutorRepository;
 
     @Autowired
-    SkillRepository skillRepository;
+    private SkillRepository skillRepository;
+
+    @Autowired
+    private LearnRelationRepository learnRelationRepository;
 
     public Tutor saveTutor(Tutor tutor) {
         tutorRepository.save(tutor);
@@ -38,8 +47,7 @@ public class TutorService {
     }
 
     public void addSkill(Skill skill, Tutor tutor) {
-        tutor.addSkill(skill);
-        tutorRepository.save(tutor);
+        LOGGER.info("Adding skill <{}> to tutor <{}>", skill.getName(), tutor.getUsername());
         skillRepository.save(skill);
     }
 
@@ -64,80 +72,120 @@ public class TutorService {
         return tutorRepository.findOne(id);
     }
 
-    public List<Tutor> findAllTeachers(String tutor) {
+    public List<Tutor> findAllTeachers(String username) {
         List<Tutor> teachers = new ArrayList<>();
-        Set<LearnRelation> relations = tutorRepository.findByUsername(tutor).getStudentRelations();
+        Tutor tutor = tutorRepository.findByUsername(username);
+        Set<LearnRelation> relations = learnRelationRepository.findByStudentId(tutor.getId());
 
         for (LearnRelation relation : relations) {
-            if (!teachers.contains(relation.getTeacher())) {
-                teachers.add(relation.getTeacher());
+            Tutor teacher = tutorRepository.findOne(relation.getTeacherId());
+            if (!teachers.contains(teacher)) {
+                teachers.add(teacher);
             }
         }
 
         return teachers;
     }
 
-    public Tutor findByUsernameWithSkillsTeachingToStudent(String teacher, String student) {
-        Tutor teacherTutor = tutorRepository.findByUsername(teacher);
-        Tutor studentTutor = tutorRepository.findByUsername(student);
-
-        Set<Skill> toughtSkills = new HashSet<>();
-
-        for (LearnRelation relation : teacherTutor.getTeacherRelations()) {
-            if (relation.getStudent().equals(studentTutor)) {
-                toughtSkills.add(relation.getSkill());
-            }
-        }
-
-        teacherTutor.setSkills(toughtSkills);
-
-        return teacherTutor;
-    }
-
-    public Tutor findByUsernameWithSkillsToughtByTeacher(String teacher, String student) {
-        Tutor teacherTutor = tutorRepository.findByUsername(teacher);
-        Tutor studentTutor = tutorRepository.findByUsername(student);
+    public TeacherDto findTeacherByUsernameWithSkillsTeachingToStudent(String teacherUsername, String studentUsername) {
+        Tutor teacherTutor = tutorRepository.findByUsername(teacherUsername);
+        Tutor studentTutor = tutorRepository.findByUsername(studentUsername);
 
         if (teacherTutor == null || studentTutor == null) {
             return null;
         }
         Set<Skill> toughtSkills = new HashSet<>();
 
-        for (LearnRelation relation : studentTutor.getStudentRelations()) {
-            if (relation.getTeacher().equals(teacherTutor)) {
-                toughtSkills.add(relation.getSkill());
+        Set<LearnRelation> teacherRelations = learnRelationRepository.findByTeacherId(teacherTutor.getId());
+
+        for (LearnRelation relation : teacherRelations) {
+            Tutor student = tutorRepository.findOne(relation.getStudentId());
+
+            if (student.equals(studentTutor)) {
+                toughtSkills.add(skillRepository.getSkillById(relation.getSkillId()));
             }
         }
 
-        teacherTutor.setSkills(toughtSkills);
+        TeacherDto teacherDto = TeacherDto.builder()
+                .id(teacherTutor.getId())
+                .name(teacherTutor.getName())
+                .lastName(teacherTutor.getLastName())
+                .build();
 
-        return teacherTutor;
+        teacherDto.setToughtSkills(toughtSkills);
+
+        return teacherDto;
+    }
+
+    public StudentDto findStudentByUsernameWithSkillsToughtByTeacher(String teacherUsername, String studentUsername) {
+        Tutor teacherTutor = tutorRepository.findByUsername(teacherUsername);
+        Tutor studentTutor = tutorRepository.findByUsername(studentUsername);
+
+        if (teacherTutor == null || studentTutor == null) {
+            return null;
+        }
+        Set<Skill> learningSkills = new HashSet<>();
+
+        Set<LearnRelation> studentRelations = learnRelationRepository.findByStudentId(studentTutor.getId());
+
+        for (LearnRelation relation : studentRelations) {
+
+            Tutor teacher = tutorRepository.findOne(relation.getTeacherId());
+
+            if (teacher.equals(teacherTutor)) {
+
+                learningSkills.add(skillRepository.getSkillById(relation.getSkillId()));
+            }
+        }
+
+        StudentDto studentDto = StudentDto.builder()
+                .id(teacherTutor.getId())
+                .name(teacherTutor.getName())
+                .lastName(teacherTutor.getLastName())
+                .build();
+
+        studentDto.setLearningSkills(learningSkills);
+
+        return studentDto;
     }
 
     private List<Tutor> findAllStudents(String username) {
         List<Tutor> students = new ArrayList<>();
-        Set<LearnRelation> relations = tutorRepository.findByUsername(username).getTeacherRelations();
+        Tutor teacher = tutorRepository.findByUsername(username);
+        Set<LearnRelation> relations = learnRelationRepository.findByTeacherId(teacher.getId());
 
         for (LearnRelation relation : relations) {
-            if (!students.contains(relation.getStudent())) {
-                students.add(relation.getStudent());
+            Tutor student = tutorRepository.findOne(relation.getStudentId());
+            if (!students.contains(student)) {
+                students.add(student);
             }
         }
 
         return students;
     }
 
-    public List<Tutor> findAllStudentsWithLearningSkills(String username) {
-        List<Tutor> students = findAllStudents(username);
+    public List<StudentDto> findAllStudentsWithLearningSkills(String username) {
+        List<Tutor> studentsTutors = findAllStudents(username);
+        List<StudentDto> students = new ArrayList<>();
 
-        for (Tutor student : students) {
+        for (Tutor student : studentsTutors) {
             Set<Skill> studentSkills = new HashSet<>();
-            for (LearnRelation relation : student.getStudentRelations()) {
-                if (relation.getTeacher().getUsername().equals(username)) {
-                    studentSkills.add(relation.getSkill());
+
+            for (LearnRelation relation : learnRelationRepository.findByStudentId(student.getId())) {
+
+                Tutor teacher = tutorRepository.findOne(relation.getTeacherId());
+
+                if (teacher.getUsername().equals(username)) {
+                    studentSkills.add(skillRepository.getSkillById(relation.getSkillId()));
                 }
             }
-            student.setSkills(studentSkills);
+            StudentDto studentDto = StudentDto.builder()
+                    .id(student.getId())
+                    .name(student.getName())
+                    .lastName(student.getLastName())
+                    .build();
+
+            studentDto.setLearningSkills(studentSkills);
         }
 
         return students;

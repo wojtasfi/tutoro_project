@@ -1,5 +1,8 @@
 package com.tutoro.entities;
 
+import lombok.Data;
+import lombok.ToString;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -8,6 +11,8 @@ import java.util.Date;
  * Created by wojci on 4/25/2017.
  */
 @Entity
+@Data
+@ToString
 public class SkillReview {
 
     @Id
@@ -20,8 +25,7 @@ public class SkillReview {
     @OneToOne
     private Tutor student;
 
-    @ManyToOne
-    private Skill skill;
+    private Long skillId;
 
     private String reviewText;
     private Date reviewDate;
@@ -30,62 +34,6 @@ public class SkillReview {
     private int rate;
 
     public SkillReview() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Tutor getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(Tutor teacher) {
-        this.teacher = teacher;
-    }
-
-    public Tutor getStudent() {
-        return student;
-    }
-
-    public void setStudent(Tutor student) {
-        this.student = student;
-    }
-
-    public Skill getSkill() {
-        return skill;
-    }
-
-    public void setSkill(Skill skill) {
-        this.skill = skill;
-    }
-
-    public String getReviewText() {
-        return reviewText;
-    }
-
-    public void setReviewText(String reviewText) {
-        this.reviewText = reviewText;
-    }
-
-    public Date getReviewDate() {
-        return reviewDate;
-    }
-
-    public void setReviewDate(Date reviewDate) {
-        this.reviewDate = reviewDate;
-    }
-
-    public int getRate() {
-        return rate;
-    }
-
-    public void setRate(int rate) {
-        this.rate = rate;
     }
 
 

@@ -1,5 +1,10 @@
 package com.tutoro.entities;
 
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,6 +14,9 @@ import java.util.Set;
  */
 
 @Entity
+@NoArgsConstructor
+@ToString
+@Data
 public class Skill {
 
     @Id
@@ -17,76 +25,16 @@ public class Skill {
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "skill", fetch = FetchType.EAGER)
-    private Set<SkillReview> reviews = new HashSet<>();
-
     @ElementCollection
     private Set<String> tags = new HashSet<>();
 
-    @ManyToOne()
-    private Tutor tutor;
+    private Long tutorId;
 
-    @Override
-    public String toString() {
-        return "Skill{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", reviews=" + reviews +
-                ", tags=" + tags +
-                ", tutor=" + tutor +
-                '}';
-    }
-
-    public Skill() {
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Tutor getTutor() {
-        return tutor;
-    }
-
-    public void setTutor(Tutor tutor) {
-        this.tutor = tutor;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
+    @Builder
+    public Skill(String name, String description, Long tutorId) {
         this.name = name;
-    }
-
-    public Set<SkillReview> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(Set<SkillReview> reviews) {
-        this.reviews = reviews;
-    }
-
-    public Set<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(Set<String> tags) {
-        this.tags = tags;
+        this.description = description;
+        this.tutorId = tutorId;
     }
 
     public void addTag(String tag) {

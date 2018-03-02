@@ -1,10 +1,10 @@
 package com.tutoro.dao;
 
 import com.tutoro.entities.LearnRelation;
-import com.tutoro.entities.Skill;
-import com.tutoro.entities.Tutor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Set;
 
 /**
  * Created by wojci on 4/15/2017.
@@ -13,5 +13,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LearnRelationRepository extends CrudRepository<LearnRelation, Long> {
 
-    LearnRelation findByTeacherAndStudentAndSkill(Tutor teacher, Tutor student, Skill skill);
+    LearnRelation findByTeacherIdAndStudentIdAndSkillId(Long teacherId, Long studentId, Long skillId);
+
+    Set<LearnRelation> findByStudentId(Long studentId);
+
+    Set<LearnRelation> findByTeacherId(Long teacherId);
+
+    Set<LearnRelation> findBySkillId(Long skillId);
+
 }

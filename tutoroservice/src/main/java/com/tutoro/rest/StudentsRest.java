@@ -1,6 +1,6 @@
 package com.tutoro.rest;
 
-import com.tutoro.entities.Tutor;
+import com.tutoro.dto.StudentDto;
 import com.tutoro.service.TutorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,15 +22,15 @@ public class StudentsRest {
 
 
     @GetMapping()
-    public List<Tutor> getStudents(@RequestParam String username) {
+    public List<StudentDto> getStudents(@RequestParam String username) {
         return tutorService.findAllStudentsWithLearningSkills(username);
 
 
     }
 
     @GetMapping(value = "/student")
-    public Tutor getStudent(@RequestParam String teacher, @RequestParam String student) {
-        return tutorService.findByUsernameWithSkillsToughtByTeacher(teacher, student);
+    public StudentDto getStudent(@RequestParam String teacher, @RequestParam String student) {
+        return tutorService.findStudentByUsernameWithSkillsToughtByTeacher(teacher, student);
 
     }
 }

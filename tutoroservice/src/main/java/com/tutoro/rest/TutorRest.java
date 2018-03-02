@@ -1,7 +1,6 @@
 package com.tutoro.rest;
 
 import com.tutoro.dto.TutorDto;
-import com.tutoro.entities.Skill;
 import com.tutoro.entities.Tutor;
 import com.tutoro.service.SkillService;
 import com.tutoro.service.TutorService;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Iterator;
-import java.util.Set;
 
 /**
  * Created by wojci on 4/26/2017.
@@ -35,7 +32,7 @@ public class TutorRest {
     public Tutor showProfile(@PathVariable("username") String username) {
 
         Tutor tutor = tutorService.findByUsername(username);
-        cleanSkills(tutor);
+//        cleanSkills(tutor);
         return tutor;
 
     }
@@ -44,7 +41,7 @@ public class TutorRest {
     public TutorDto getTutor(@PathVariable("username") String username) {
 
         Tutor tutor = tutorService.findByUsername(username);
-        cleanSkills(tutor);
+//        cleanSkills(tutor);
 
         return TutorDto.builder()
                 .id(tutor.getId())
@@ -74,20 +71,20 @@ public class TutorRest {
 
 
     //When returning to profile view from adding skill view
-    private Tutor cleanSkills(Tutor tutor) {
-        Set<Skill> skills = tutor.getSkills();
-
-        Iterator<Skill> it = skills.iterator();
-        while (it.hasNext()) {
-            Skill skill = it.next();
-            if (skill.getName() == null) {
-                it.remove();
-                skillService.deleteSkill(skill);
-            }
-        }
-
-        tutor.setSkills(skills);
-        tutorService.saveTutor(tutor);
-        return tutor;
-    }
+//    private Tutor cleanSkills(Tutor tutor) {
+//        Set<Skill> skills = tutor.getSkills();
+//
+//        Iterator<Skill> it = skills.iterator();
+//        while (it.hasNext()) {
+//            Skill skill = it.next();
+//            if (skill.getName() == null) {
+//                it.remove();
+//                skillService.deleteSkill(skill);
+//            }
+//        }
+//
+//        tutor.setSkills(skills);
+//        tutorService.saveTutor(tutor);
+//        return tutor;
+//    }
 }

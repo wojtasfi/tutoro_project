@@ -2,6 +2,7 @@ package com.tutoro.rest;
 
 import com.tutoro.dto.SkillForm;
 import com.tutoro.entities.Skill;
+import com.tutoro.entities.Tutor;
 import com.tutoro.service.SkillService;
 import com.tutoro.service.TutorService;
 import org.slf4j.Logger;
@@ -41,8 +42,9 @@ public class SkillRest {
 
     private String encodeUsername(Skill skill) {
         String encodedUsername = null;
+        Tutor tutor = tutorService.findOne(skill.getTutorId());
         try {
-            encodedUsername = URLEncoder.encode(skill.getTutor().getUsername(), "UTF-8");
+            encodedUsername = URLEncoder.encode(tutor.getUsername(), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             LOGGER.error("Could not encode message", e);
         }
@@ -60,10 +62,9 @@ public class SkillRest {
         String[] stringTags = skillForm.getTags().split(",");
         Set<String> tags = new HashSet<>(Arrays.asList(stringTags));
         skill.setTags(tags);
-        LOGGER.info(skill.toString());
 
-        tutorService.addSkill(skill, skill.getTutor());
-//        skillService.saveSkill(skill);
+        LOGGER.info("Adding skill <{}> to tutor <{}>", skill.getName(), skill.getTutorId());
+        skillService.saveSkill(skill);
 
         return ResponseEntity.created(URI.create("/skills/skill" + skill.getId())).build();
 
@@ -72,5 +73,15 @@ public class SkillRest {
     @GetMapping(value = "skill/{skillId}")
     public Skill viewSkill(@PathVariable Long skillId) {
         return skillService.getSkillById(skillId);
+    }
+
+    @GetMapping(value = "skills/{tutorUsername}")
+    public Set<Skill> findSkillsByTutorUsername(@PathVariable String tutorUsername) {
+        return skillService.getSkillByTutorUsername(tutorUsername);
+    }
+
+    @GetMapping(value = "skills/{tutorId}")
+    public Set<Skill> findSkillsByTutorId(@PathVariable Long tutorId) {
+        return skillService.getSkillByTutorId(tutorId);
     }
 }

@@ -1,8 +1,10 @@
 package com.tutoro.rest;
 
+import com.tutoro.dto.TutorDto;
 import com.tutoro.entities.Skill;
 import com.tutoro.entities.Tutor;
 import com.tutoro.service.SearchService;
+import com.tutoro.service.SkillService;
 import com.tutoro.service.TutorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,25 +35,34 @@ public class SearchRest {
     @Autowired
     private SearchService searchService;
 
+    @Autowired
+    private SkillService skillService;
+
     private static Logger LOGGER = LoggerFactory.getLogger(SearchRest.class);
 
     @GetMapping(value = "/tutors")
-    public List<Tutor> findAllTutors() {
+    public List<TutorDto> findAllTutors() {
 
         List<Tutor> tutors = tutorService.findAll();
+        List<TutorDto> dtos = new ArrayList<>();
 
         for (Tutor tutor : tutors) {
 
-            Set<Skill> limitedSkills = tutor.getSkills()
+            Set<Skill> limitedSkills = skillService.getSkillByTutorId(tutor.getId())
                     .stream()
                     .limit(15)
                     .collect(Collectors.toSet());
 
-            tutor.setSkills(limitedSkills);
+            TutorDto tutorDto = TutorDto.builder()
+                    .id(tutor.getId())
+                    .userName(tutor.getUsername())
+                    .skills(limitedSkills)
+                    .build();
+            dtos.add(tutorDto);
 
         }
 
-        return tutors;
+        return dtos;
     }
 
     @RequestMapping(value = "/skill", method = POST)

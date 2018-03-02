@@ -5,7 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -23,14 +26,11 @@ public class LearnRelation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    private Tutor teacher;
+    private Long teacherId;
 
-    @OneToOne
-    private Tutor student;
+    private Long studentId;
 
-    @OneToOne
-    private Skill skill;
+    private Long skillId;
 
     private LocalDate startDate;
     private LocalDate endDate;
