@@ -13,9 +13,7 @@ import java.util.Set;
  * Created by wojci on 4/15/2017.
  */
 @Entity
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class Tutor {
 
     @Id
@@ -68,6 +66,18 @@ public class Tutor {
                 ", story='" + story + '\'' +
                 ", picture='" + profilePic + '\'' +
                 '}';
+    }
+
+    @Builder
+    public Tutor(String name, String lastName, String username, String password, String email, String skype, String story, byte[] profilePic) {
+        this.name = name;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.skype = skype;
+        this.story = story;
+        this.profilePic = profilePic;
     }
 
     public String getStory() {
