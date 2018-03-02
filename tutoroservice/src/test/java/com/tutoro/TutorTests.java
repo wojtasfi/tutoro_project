@@ -2,6 +2,7 @@ package com.tutoro;
 
 import com.TestUtils;
 import com.tutoro.dto.StudentDto;
+import com.tutoro.dto.TeacherDto;
 import com.tutoro.entities.Skill;
 import com.tutoro.entities.Tutor;
 import com.tutoro.service.SkillService;
@@ -89,6 +90,77 @@ public class TutorTests {
         List<StudentDto> students = tutorService.findAllStudentsWithLearningSkills(teacher.getUsername());
 
         assertEquals(3, students.size());
+
+    }
+
+    @Test
+    public void shouldFindAllTeachers() {
+        //given
+        Tutor teacher1 = testUtils.addTutor("teacherName1", "teacherLast1", "teacherUser1");
+        Tutor teacher2 = testUtils.addTutor("teacherName2", "teacherLast2", "teacherUser2");
+        Tutor teacher3 = testUtils.addTutor("teacherName3", "teacherLast3", "teacherUser3");
+
+        Tutor student = testUtils.addTutor("studentName", "studentLast", "studentUser");
+
+        Skill skill1 = testUtils.prepareSkill("TestSkill1", teacher1.getId());
+        Skill skill2 = testUtils.prepareSkill("TestSkill2", teacher2.getId());
+        Skill skill3 = testUtils.prepareSkill("TestSkill3", teacher3.getId());
+
+        testUtils.createLearnRealtion(student.getId(), teacher1.getId(), skill1.getId());
+        testUtils.createLearnRealtion(student.getId(), teacher2.getId(), skill2.getId());
+        testUtils.createLearnRealtion(student.getId(), teacher3.getId(), skill3.getId());
+
+        //when
+        List<Tutor> teachers = tutorService.findAllTeachers(student.getUsername());
+
+        //then
+        assertEquals(3, teachers.size());
+
+    }
+
+    @Test
+    public void shouldFindTeacherWithSkills() {
+        //given
+        Tutor teacher = testUtils.addTutor("teacherName1", "teacherLast1", "teacherUser1");
+
+        Tutor student = testUtils.addTutor("studentName", "studentLast", "studentUser");
+
+        Skill skill1 = testUtils.prepareSkill("TestSkill1", teacher.getId());
+        Skill skill2 = testUtils.prepareSkill("TestSkill2", teacher.getId());
+        Skill skill3 = testUtils.prepareSkill("TestSkill3", teacher.getId());
+
+        testUtils.createLearnRealtion(student.getId(), teacher.getId(), skill1.getId());
+        testUtils.createLearnRealtion(student.getId(), teacher.getId(), skill2.getId());
+        testUtils.createLearnRealtion(student.getId(), teacher.getId(), skill3.getId());
+
+        //when
+        TeacherDto teacherDto = tutorService.findTeacherByUsernameWithSkillsTeachingToStudent(teacher.getUsername(), student.getUsername());
+
+        //then
+        assertEquals(3, teacherDto.getToughtSkills().size());
+
+    }
+
+    @Test
+    public void shouldFindStudentWithSkills() {
+        //given
+        Tutor teacher = testUtils.addTutor("teacherName1", "teacherLast1", "teacherUser1");
+
+        Tutor student = testUtils.addTutor("studentName", "studentLast", "studentUser");
+
+        Skill skill1 = testUtils.prepareSkill("TestSkill1", teacher.getId());
+        Skill skill2 = testUtils.prepareSkill("TestSkill2", teacher.getId());
+        Skill skill3 = testUtils.prepareSkill("TestSkill3", teacher.getId());
+
+        testUtils.createLearnRealtion(student.getId(), teacher.getId(), skill1.getId());
+        testUtils.createLearnRealtion(student.getId(), teacher.getId(), skill2.getId());
+        testUtils.createLearnRealtion(student.getId(), teacher.getId(), skill3.getId());
+
+        //when
+        StudentDto studentDto = tutorService.findStudentByUsernameWithSkillsToughtByTeacher(teacher.getUsername(), student.getUsername());
+
+        //then
+        assertEquals(3, studentDto.getLearningSkills().size());
 
     }
 
