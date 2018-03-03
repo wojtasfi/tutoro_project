@@ -43,5 +43,4 @@ public class LearnRelationRawData {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    private final String LEARNING_FROM_RELATION = "LEARNING_FROM_RELATION";
 }
