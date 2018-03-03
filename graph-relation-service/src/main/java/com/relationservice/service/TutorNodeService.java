@@ -166,4 +166,8 @@ public class TutorNodeService {
         }
         return false;
     }
+
+    public TutorNode findByUsername(String username) {
+        return tutorNodeRepository.findByUsername(username);
+    }
 }
