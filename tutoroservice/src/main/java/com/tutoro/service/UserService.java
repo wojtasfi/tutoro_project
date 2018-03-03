@@ -28,7 +28,7 @@ public class UserService {
     @Autowired
     private NotifierClient notifierClient;
 
-    public void saveNewUser(UserDto userDto) {
+    public String saveNewUser(UserDto userDto) {
 
         logger.info("Creating new user: " + userDto.getUsername());
         User user = User.builder()
@@ -49,6 +49,7 @@ public class UserService {
 
         logger.info("Sending verification email with token: " + token);
         notifierClient.sendRegisterVeificationEmail(token);
+        return token.toString();
 
     }
 

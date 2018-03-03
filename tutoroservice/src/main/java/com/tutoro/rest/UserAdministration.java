@@ -32,8 +32,9 @@ public class UserAdministration {
                     .build();
 
             tutorService.saveTutor(tutor);
-            userService.saveNewUser(userDto);
-            return ResponseEntity.created(URI.create("/tutors/profile/" + tutor.getUsername())).build();
+            String token = userService.saveNewUser(userDto);
+            return ResponseEntity.created(URI.create("/tutors/" + tutor.getUsername())).body("Verification token: " + token);
+
         } else {
 
             return ResponseEntity.badRequest().body("Duplicated tutor");
