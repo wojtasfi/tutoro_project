@@ -1,6 +1,5 @@
 package com.tutoro.service;
 
-import com.google.common.collect.Sets;
 import com.tutoro.dao.SkillRepository;
 import com.tutoro.dao.TutorRepository;
 import com.tutoro.entities.Skill;
@@ -18,10 +17,10 @@ import java.util.Set;
 public class SkillService {
 
     @Autowired
-    TutorRepository tutorRepository;
+    private TutorRepository tutorRepository;
 
     @Autowired
-    SkillRepository skillRepository;
+    private SkillRepository skillRepository;
 
     public Skill saveSkill(Skill skill) {
         skillRepository.save(skill);
@@ -47,9 +46,9 @@ public class SkillService {
         return skill;
     }
 
-    //TODO implement
     public Set<Skill> getSkillByTutorUsername(String tutorUsername) {
-        return Sets.newHashSet();
+        Long tutorId = tutorRepository.findByUsername(tutorUsername).getId();
+        return skillRepository.findByTutorId(tutorId);
     }
 
     public List<Skill> findAll() {
