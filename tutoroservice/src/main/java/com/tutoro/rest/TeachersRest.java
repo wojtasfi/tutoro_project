@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/teachers")
+@RequestMapping("teachers/")
 public class TeachersRest {
 
     @Autowired
@@ -24,7 +24,7 @@ public class TeachersRest {
         return tutorService.findAllTeachers(username);
     }
 
-    @GetMapping(value = "/teacher")
+    @GetMapping(value = "teacher")
     public TeacherDto showTeacher(@RequestParam String teacherUsername,
                                   @RequestParam String studentUsername) {
         return tutorService.findTeacherByUsernameWithSkillsTeachingToStudent(teacherUsername, studentUsername);

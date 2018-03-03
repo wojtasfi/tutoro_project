@@ -77,7 +77,7 @@ public class SwaggerConfig {
                 .groupName("skills rest")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.tutoro.rest"))
-                .paths(PathSelectors.ant("/skills/*"))
+                .paths(PathSelectors.ant("/skill/*"))
                 .build();
     }
 
@@ -87,7 +87,7 @@ public class SwaggerConfig {
                 .groupName("tutors rest")
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.tutoro.rest"))
-                .paths(PathSelectors.ant("/tutors/*"))
+                .paths(PathSelectors.ant("/tutor/*"))
                 .build();
     }
 
@@ -98,6 +98,16 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.tutoro.rest"))
                 .paths(PathSelectors.ant("/users/*"))
+                .build();
+    }
+
+    @Bean
+    public Docket validation() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("validation rest")
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.tutoro.rest"))
+                .paths(PathSelectors.ant("/validate/*"))
                 .build();
     }
 }

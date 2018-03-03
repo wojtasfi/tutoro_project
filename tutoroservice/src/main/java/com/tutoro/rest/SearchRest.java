@@ -26,7 +26,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
  * Created by wojci on 4/26/2017.
  */
 @RestController
-@RequestMapping("/search")
+@RequestMapping("search/")
 public class SearchRest {
 
     @Autowired
@@ -40,7 +40,7 @@ public class SearchRest {
 
     private static Logger LOGGER = LoggerFactory.getLogger(SearchRest.class);
 
-    @GetMapping(value = "/tutors")
+    @GetMapping(value = "tutors")
     public List<TutorDto> findAllTutors() {
 
         List<Tutor> tutors = tutorService.findAll();
@@ -65,7 +65,7 @@ public class SearchRest {
         return dtos;
     }
 
-    @RequestMapping(value = "/skill", method = POST)
+    @RequestMapping(value = "skill", method = POST)
     public List<Tutor> skillSearch(@RequestParam String text, Model model) {
         return searchService.simpleSearch(text);
     }

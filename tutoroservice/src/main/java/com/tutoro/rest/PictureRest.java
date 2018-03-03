@@ -20,7 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 @RestController
-@RequestMapping("/pictures")
+@RequestMapping("pictures/")
 public class PictureRest {
 
 
@@ -32,7 +32,7 @@ public class PictureRest {
     @Autowired
     private PictureService pictureService;
 
-    @PostMapping(value = "/upload")
+    @PostMapping(value = "upload")
     public ResponseEntity<String> onUpload(@RequestParam MultipartFile file, @RequestParam Long id) throws IOException {
         Tutor tutor = tutorService.findOne(id);
         if (file.isEmpty() || !pictureService.isImage(file)) {
@@ -61,7 +61,7 @@ public class PictureRest {
     }
 
 
-    @GetMapping(value = "/profilepic")
+    @GetMapping(value = "profilepic")
     public ResponseEntity<byte[]> downloadUserAvatarImage(@RequestParam("username") String username) throws IOException {
         Tutor tutor = tutorService.findByUsername(username);
 

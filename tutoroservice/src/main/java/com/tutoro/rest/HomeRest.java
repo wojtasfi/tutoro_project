@@ -20,7 +20,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
  */
 
 @RestController
-@RequestMapping("/home")
+@RequestMapping("home/")
 public class HomeRest {
 
     private static Logger LOGGER = LoggerFactory.getLogger(HomeRest.class);

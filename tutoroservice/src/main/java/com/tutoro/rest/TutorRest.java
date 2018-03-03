@@ -17,7 +17,7 @@ import java.net.URLEncoder;
  * Created by wojci on 4/26/2017.
  */
 @RestController
-@RequestMapping("/tutors")
+@RequestMapping("tutor/")
 public class TutorRest {
 
     @Autowired
@@ -28,16 +28,7 @@ public class TutorRest {
 
     private static Logger LOGGER = LoggerFactory.getLogger(TutorRest.class);
 
-    @GetMapping(value = "profile/{username}")
-    public Tutor showProfile(@PathVariable("username") String username) {
-
-        Tutor tutor = tutorService.findByUsername(username);
-//        cleanSkills(tutor);
-        return tutor;
-
-    }
-
-    @GetMapping(value = "tutor/{username}")
+    @GetMapping(value = "/{username}")
     public TutorDto getTutor(@PathVariable("username") String username) {
 
         Tutor tutor = tutorService.findByUsername(username);

@@ -23,7 +23,7 @@ import java.util.Set;
  * Created by wojci on 4/26/2017.
  */
 @RestController
-@RequestMapping("/skills")
+@RequestMapping("skill/")
 public class SkillRest {
     @Autowired
     private TutorService tutorService;
@@ -33,7 +33,7 @@ public class SkillRest {
 
     private static Logger LOGGER = LoggerFactory.getLogger(SkillRest.class);
 
-    @DeleteMapping(value = "deleteSkill")
+    @DeleteMapping("deleteSkill")
     public ResponseEntity<String> deleteSkill(@RequestParam Long skillId) {
         Skill skill = skillService.deleteSkill(skillId);
 
@@ -51,7 +51,7 @@ public class SkillRest {
         return encodedUsername;
     }
 
-    @PostMapping(value = "addskill")
+    @PostMapping("addSkill")
     public ResponseEntity<String> addSkill(@ModelAttribute SkillForm skillForm,
                                            Model model) {
 
@@ -70,18 +70,18 @@ public class SkillRest {
 
     }
 
-    @GetMapping(value = "skill/{skillId}")
-    public Skill viewSkill(@PathVariable Long skillId) {
+    @GetMapping("findBySkillId")
+    public Skill viewSkill(@RequestParam Long skillId) {
         return skillService.getSkillById(skillId);
     }
 
-    @GetMapping(value = "skills/{tutorUsername}")
-    public Set<Skill> findSkillsByTutorUsername(@PathVariable String tutorUsername) {
+    @GetMapping("findByTutorUsername")
+    public Set<Skill> findSkillsByTutorUsername(@RequestParam String tutorUsername) {
         return skillService.getSkillByTutorUsername(tutorUsername);
     }
 
-    @GetMapping(value = "skills/{tutorId}")
-    public Set<Skill> findSkillsByTutorId(@PathVariable Long tutorId) {
+    @GetMapping("findByTutorId")
+    public Set<Skill> findSkillsByTutorId(@RequestParam Long tutorId) {
         return skillService.getSkillByTutorId(tutorId);
     }
 }

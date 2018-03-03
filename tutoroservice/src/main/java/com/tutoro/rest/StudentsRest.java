@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/students")
+@RequestMapping("students/")
 public class StudentsRest {
 
     private static Logger LOGGER = LoggerFactory.getLogger(StudentsRest.class);
@@ -28,7 +28,7 @@ public class StudentsRest {
 
     }
 
-    @GetMapping(value = "/student")
+    @GetMapping(value = "student")
     public StudentDto getStudent(@RequestParam String teacher, @RequestParam String student) {
         return tutorService.findStudentByUsernameWithSkillsToughtByTeacher(teacher, student);
 

@@ -15,7 +15,7 @@ public class ResourceServerProductionConfiguration extends ResourceServerConfigu
         http.antMatcher("/**")
                 .authorizeRequests()
                 .antMatchers("/", "/env", "/info", "/users/register",
-                        "/users/validate/username", "/users/validate/email", "users/verify/email",
+                        "/validate/username", "/validate/email", "/validate",
                         "/swagger-ui.html", "/swagger-ui/index.html", "/swagger-resources/**")
                 .permitAll()
                 .anyRequest()

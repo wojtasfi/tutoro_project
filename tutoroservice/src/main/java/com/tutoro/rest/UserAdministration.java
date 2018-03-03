@@ -6,13 +6,15 @@ import com.tutoro.service.TutorService;
 import com.tutoro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
-import java.util.UUID;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("users/")
 public class UserAdministration {
 
     @Autowired
@@ -39,29 +41,5 @@ public class UserAdministration {
 
     }
 
-    @GetMapping("validate/username")
-    private Boolean checkUsername(@RequestParam String username) {
-        if (tutorService.checkIfTutorExists(username)) {
-            return false;
-        }
-        return true;
-    }
 
-    @GetMapping("validate/email")
-    private ResponseEntity checkEmail(@RequestParam String email) {
-        if (tutorService.checkIfEmailExists(email)) {
-            return ResponseEntity.badRequest().body("Duplicated");
-        }
-        return ResponseEntity.ok("Unique");
-    }
-
-    @GetMapping("verify/email/{token}")
-    private ResponseEntity<String> verifiyRegistrationToken(@PathVariable String tokenString) {
-        UUID token = UUID.fromString(tokenString);
-
-        if (userService.verifyToken(token)) {
-            return ResponseEntity.ok("Verified");
-        }
-        return ResponseEntity.badRequest().body("Token not valid");
-    }
 }

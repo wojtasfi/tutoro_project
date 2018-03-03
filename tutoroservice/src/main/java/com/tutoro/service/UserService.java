@@ -62,6 +62,11 @@ public class UserService {
             return false;
         }
 
+        logger.info("Veryfing token for user <{}>", emailToken.getUsername());
+        User user = userRepository.findOneByUsername(emailToken.getUsername());
+        user.setEnabled(true);
+        userRepository.save(user);
+        tokenRepository.delete(emailToken);
         return true;
     }
 }

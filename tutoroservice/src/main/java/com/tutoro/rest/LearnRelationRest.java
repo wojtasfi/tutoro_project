@@ -21,7 +21,7 @@ import java.time.LocalDate;
  * Created by wojci on 5/23/2017.
  */
 @RestController
-@RequestMapping("/learn_relations")
+@RequestMapping("learn_relations/")
 public class LearnRelationRest {
 
     private static Logger LOGGER = LoggerFactory.getLogger(LearnRelationRest.class);
@@ -35,7 +35,7 @@ public class LearnRelationRest {
     private LearnRelationService learnRelationService;
 
 
-    @PostMapping(value = "/save")
+    @PostMapping(value = "save")
     private ResponseEntity<String> saveLearnRelation(@RequestParam String studentName,
                                                      @RequestParam String techareUsername,
                                                      @RequestParam Long skillId) {
@@ -68,7 +68,7 @@ public class LearnRelationRest {
     }
 
 
-    @GetMapping("/relation/{relationId}")
+    @GetMapping("/{relationId}")
     private LearnRelation getLearnRelation(@PathVariable Long relationId) {
         return learnRelationService.getById(relationId);
     }
