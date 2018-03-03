@@ -46,7 +46,7 @@ public class TestUtils {
     }
 
     public void prepareRandomSkills(int numebrOfSkills, Long tutorId) {
-        for (int i = 0; i <= numebrOfSkills; i++) {
+        for (int i = 1; i <= numebrOfSkills; i++) {
             skillRepository.save(Skill.builder()
                     .name("Test" + i)
                     .description("Description of " + i)

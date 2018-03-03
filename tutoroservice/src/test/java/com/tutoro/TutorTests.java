@@ -1,12 +1,17 @@
 package com.tutoro;
 
 import com.TestUtils;
+import com.tutoro.dao.EmailVerificationTokenRepository;
+import com.tutoro.dao.LearnRelationRepository;
+import com.tutoro.dao.SkillRepository;
+import com.tutoro.dao.TutorRepository;
 import com.tutoro.dto.StudentDto;
 import com.tutoro.dto.TeacherDto;
 import com.tutoro.entities.Skill;
 import com.tutoro.entities.Tutor;
 import com.tutoro.service.SkillService;
 import com.tutoro.service.TutorService;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +37,26 @@ public class TutorTests {
     @Autowired
     private SkillService skillService;
 
+    @Autowired
+    private LearnRelationRepository relationRepository;
 
+    @Autowired
+    private EmailVerificationTokenRepository emailRepository;
+
+    @Autowired
+    private SkillRepository skillRepository;
+
+    @Autowired
+    private TutorRepository tutorRepository;
+
+
+    @After
+    public void cleanUp() {
+        relationRepository.deleteAll();
+        emailRepository.deleteAll();
+        skillRepository.deleteAll();
+        tutorRepository.deleteAll();
+    }
     @Test
     public void shouldAddSkillToTutor() {
         //given
