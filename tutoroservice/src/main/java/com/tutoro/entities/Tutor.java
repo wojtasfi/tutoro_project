@@ -41,21 +41,6 @@ public class Tutor {
         this.profilePic = profilePic;
     }
 
-    @Override
-    public String toString() {
-        return "Tutor{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", skype='" + skype + '\'' +
-                ", story='" + story + '\'' +
-                ", picture='" + profilePic + '\'' +
-                '}';
-    }
-
     @Builder
     public Tutor(String name, String lastName, String username, String password, String email, String skype, String story, byte[] profilePic) {
         this.name = name;

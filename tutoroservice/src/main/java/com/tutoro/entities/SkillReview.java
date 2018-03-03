@@ -1,6 +1,7 @@
 package com.tutoro.entities;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import java.util.Date;
 @Entity
 @Data
 @ToString
+@NoArgsConstructor
 public class SkillReview {
 
     @Id
@@ -32,9 +34,5 @@ public class SkillReview {
 
     @Size(min = 1, max = 10)
     private int rate;
-
-    public SkillReview() {
-    }
-
 
 }
