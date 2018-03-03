@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
  * Created by wojciech on 28.06.17.
  */
 @Repository
-public interface LearnRelationRepository extends CrudRepository<LearnRelationRawData, Long> {
+public interface LearnRelationRawDataRepository extends CrudRepository<LearnRelationRawData, Long> {
 
 }
