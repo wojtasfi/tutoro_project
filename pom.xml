@@ -23,6 +23,7 @@
     <module>zipkinserver</module>
     <module>authentication-service</module>
     <module>tutoroservice</module>
+    <module>recommendation-service</module>
       <module>graph-relation-service</module>
   </modules>
   <build>

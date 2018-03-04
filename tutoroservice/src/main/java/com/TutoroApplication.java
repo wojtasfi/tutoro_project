@@ -68,7 +68,7 @@ public class TutoroApplication implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments applicationArguments) throws Exception {
 
-        if (!activeProfile.equals("test")) {
+        if (activeProfile.equals("default")) {
 
             Tutor adam = createTestUser("adam");
             Tutor beth = createTestUser("beth");
@@ -118,6 +118,7 @@ public class TutoroApplication implements ApplicationRunner {
     private Tutor createTestUser(String username) {
         Tutor tutor = Tutor.builder()
                 .username(username)
+                .name(username)
                 .email(username + "@gmail.com")
                 .build();
 

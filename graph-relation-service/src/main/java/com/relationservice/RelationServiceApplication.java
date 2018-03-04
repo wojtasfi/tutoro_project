@@ -4,7 +4,12 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.relationservice.dao.neo4j.UtilDao;
 import com.relationservice.utils.UserContextInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -25,12 +30,18 @@ import static java.time.format.DateTimeFormatter.ofPattern;
 @EnableDiscoveryClient
 @SpringBootApplication
 @EnableResourceServer
-public class RelationServiceApplication {
+public class RelationServiceApplication implements ApplicationRunner {
     public static final DateTimeFormatter FORMATTER = ofPattern("dd-MM-yyyy");
 
     public static void main(String[] args) {
         SpringApplication.run(RelationServiceApplication.class, args);
     }
+
+    @Autowired
+    private UtilDao utilDao;
+
+    @Value("${spring.profiles.active}")
+    private String activeProfile;
 
     @Primary
     @Bean
@@ -59,6 +70,14 @@ public class RelationServiceApplication {
         return objectMapper;
     }
 
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        if (activeProfile.equals("default")) {
+            utilDao.removeAllRelationships();
+            utilDao.removeAllNodes();
+        }
+    }
+
     public class LocalDateSerializer extends JsonSerializer<LocalDate> {
 
         @Override
@@ -73,4 +92,6 @@ public class RelationServiceApplication {
             return LocalDate.parse(p.getValueAsString(), FORMATTER);
         }
     }
+
+
 }

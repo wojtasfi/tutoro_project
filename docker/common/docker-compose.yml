@@ -43,17 +43,6 @@ services:
     volumes:
       - /srv/docker/postgresql:/var/lib/postgresql/tutor
 
-  database2:
-    image: postgres:9.5
-    ports:
-      - "5433:5432"
-    environment:
-      POSTGRES_USER: tutoro
-      POSTGRES_PASSWORD: tutor
-      POSTGRES_DB: tutoro_relations
-    volumes:
-      - /srv/docker/postgresql:/var/lib/postgresql/tutoro_relations
-
   tutoroservice:
     image: wociechf/tutoro:tutoro
     ports:
@@ -111,7 +100,6 @@ services:
         ZIPKIN_URI: "http://zipkin:9411"
         KAFKASERVER_URI: "kafkaserver"
         ZKSERVER_URI: "kafkaserver"
-        DATABASESERVER_PORT: "5432"
         EUREKASERVER_PORT:   "8761"
         CONFIGSERVER_PORT:   "8888"
         ZUULSERVER_PORT:     "5555"
@@ -119,6 +107,26 @@ services:
         REDIS_PORT:          "6379"
         ZIPKIN_PORT:         "9411"
         ENCRYPT_KEY:       "IMSYMMETRIC"
+
+  recommendation-service:
+        image: wociechf/recommendation-service:tutoro
+        ports:
+          - "8086:8086"
+        environment:
+          PROFILE: "default"
+          SERVER_PORT: "8086"
+          CONFIGSERVER_URI: "http://configserver:8888"
+          EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+          ZIPKIN_URI: "http://zipkin:9411"
+          KAFKASERVER_URI: "kafkaserver"
+          ZKSERVER_URI: "kafkaserver"
+          EUREKASERVER_PORT:   "8761"
+          CONFIGSERVER_PORT:   "8888"
+          ZUULSERVER_PORT:     "5555"
+          KAFKASERVER_PORT:    "2181"
+          REDIS_PORT:          "6379"
+          ZIPKIN_PORT:         "9411"
+          ENCRYPT_KEY:       "IMSYMMETRIC"
 
   authentication-service:
       image: wociechf/authentication-service:tutoro
