@@ -1,7 +1,7 @@
 package com.relationservice;
 
 import com.relationservice.dao.neo4j.*;
-import com.relationservice.entities.db.LearnRelationRawData;
+import com.relationservice.dto.LearnRelationRawDataDTO;
 import com.relationservice.entities.neo4j.*;
 import com.relationservice.service.SkillNodeService;
 import com.relationservice.service.TutorNodeService;
@@ -63,7 +63,7 @@ public class RelationServiceApplicationTests {
 
     @Before
     public void prepareData() {
-        LearnRelationRawData rawData = testUtils.createLearnRelationRawData(skillName, studentUsername, teacherUsername);
+        LearnRelationRawDataDTO rawData = testUtils.createLearnRelationRawData(skillName, studentUsername, teacherUsername);
         tutorNodeService.processLearnRelationRawData(rawData);
     }
 

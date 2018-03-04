@@ -2,11 +2,13 @@ package com.tutoro.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tutoro.dao.LearnRelationRawDataRepository;
 import com.tutoro.dao.LearnRelationRepository;
 import com.tutoro.dao.SkillRepository;
 import com.tutoro.dao.TutorRepository;
 import com.tutoro.dto.LearnRelationRawDataDTO;
 import com.tutoro.entities.LearnRelation;
+import com.tutoro.entities.LearnRelationRawData;
 import com.tutoro.entities.Skill;
 import com.tutoro.entities.Tutor;
 import org.slf4j.Logger;
@@ -33,9 +35,14 @@ public class LearnRelationService {
     private LearnRelationRepository learnRelationRepository;
 
     @Autowired
+    private LearnRelationRawDataRepository learnRelationRawDataRepository;
+
+    @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    @Autowired
+    private ObjectMapper objectMapper;
+
 
     public LearnRelation saveLearnRelation(LearnRelation learnRelation) {
         LearnRelation newLearnRelation = learnRelationRepository.save(learnRelation);
@@ -43,7 +50,13 @@ public class LearnRelationService {
         Tutor teacher = tutorRepository.findOne(learnRelation.getTeacherId());
         Skill skill = skillRepository.findOne(learnRelation.getSkillId());
 
-        LearnRelationRawDataDTO dto = LearnRelationRawDataDTO.createFromLearnRelation(newLearnRelation, student, teacher, skill);
+        LearnRelationRawData rawData = LearnRelationRawData
+                .createFromLearnRelation(newLearnRelation, student, teacher, skill);
+
+        learnRelationRawDataRepository.save(rawData);
+
+        LearnRelationRawDataDTO dto = LearnRelationRawDataDTO.createFromRawData(rawData);
+
         try {
             sendMessage(dto);
         } catch (JsonProcessingException e) {
@@ -54,7 +67,7 @@ public class LearnRelationService {
 
     private void sendMessage(final LearnRelationRawDataDTO learnRelation) throws JsonProcessingException {
         LOGGER.info("Sending message to create relation: " + learnRelation.getSkill());
-        String json = mapper.writeValueAsString(learnRelation);
+        String json = objectMapper.writeValueAsString(learnRelation);
         kafkaTemplate.send("learnRelationAdded", json);
 
     }

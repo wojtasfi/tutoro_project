@@ -1,29 +1,18 @@
-package com.relationservice.entities.db;
+package com.relationservice.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.time.LocalDate;
 
 /**
  * Created by wojciech on 28.06.17.
  */
-@Entity
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class LearnRelationRawData {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@ToString
+public class LearnRelationRawDataDTO {
     private Long teacherId;
     private String teacherName;
     private String teacherLastName;

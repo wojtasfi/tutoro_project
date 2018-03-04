@@ -1,9 +1,6 @@
 package com.relationservice.entities.neo4j;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 
@@ -15,13 +12,14 @@ import org.neo4j.ogm.annotation.NodeEntity;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class TutorNode {
 
     @GraphId
     private Long id;
+    private String username;
     private String name;
     private String lastName;
-    private String username;
     private String email;
     private String skype;
 }

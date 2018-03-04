@@ -1,12 +1,8 @@
 package com.tutoro.dto;
 
-import com.tutoro.entities.LearnRelation;
-import com.tutoro.entities.Skill;
-import com.tutoro.entities.Tutor;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.tutoro.entities.LearnRelationRawData;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -17,6 +13,8 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class LearnRelationRawDataDTO {
     private Long teacherId;
     private String teacherName;
@@ -38,28 +36,30 @@ public class LearnRelationRawDataDTO {
     private LocalDate endDate;
 
 
-    public static LearnRelationRawDataDTO createFromLearnRelation(LearnRelation learnRelation, Tutor student, Tutor teacher, Skill skill) {
+    public static LearnRelationRawDataDTO createFromRawData(LearnRelationRawData rawData) {
         LearnRelationRawDataDTO dto = new LearnRelationRawDataDTO();
-        dto.teacherId = teacher.getId();
-        dto.teacherName = teacher.getName();
-        dto.teacherLastName = teacher.getLastName();
-        dto.teacherUsername = teacher.getUsername();
-        dto.teacherEmail = teacher.getEmail();
-        dto.teacherSkype = teacher.getSkype();
 
-        dto.studentId = student.getId();
-        dto.studentName = student.getName();
-        dto.studentLastName = student.getLastName();
-        dto.studentUsername = student.getUsername();
-        dto.studentEmail = student.getEmail();
-        dto.studentSkype = student.getSkype();
+        dto.teacherId = rawData.getTeacherId();
+        dto.teacherName = rawData.getTeacherName();
+        dto.teacherLastName = rawData.getTeacherLastName();
+        dto.teacherUsername = rawData.getTeacherUsername();
+        dto.teacherEmail = rawData.getTeacherEmail();
+        dto.teacherSkype = rawData.getTeacherSkype();
 
-        dto.skill = skill.getName();
-        dto.skillId = skill.getId();
+        dto.studentId = rawData.getStudentId();
+        dto.studentName = rawData.getStudentName();
+        dto.studentLastName = rawData.getStudentLastName();
+        dto.studentUsername = rawData.getStudentUsername();
+        dto.studentEmail = rawData.getStudentEmail();
+        dto.studentSkype = rawData.getStudentSkype();
 
-        dto.startDate = learnRelation.getStartDate();
-        dto.endDate = learnRelation.getEndDate();
+        dto.skill = rawData.getSkill();
+        dto.skillId = rawData.getSkillId();
+
+        dto.startDate = rawData.getStartDate();
+        dto.endDate = rawData.getEndDate();
 
         return dto;
     }
+
 }

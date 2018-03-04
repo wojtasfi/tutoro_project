@@ -1,7 +1,7 @@
 package com.relationservice.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.relationservice.entities.db.LearnRelationRawData;
+import com.relationservice.dto.LearnRelationRawDataDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,34 +18,33 @@ import java.io.IOException;
 @Component
 public class MessageReceiver {
 
-    private final ObjectMapper mapper = new ObjectMapper();
     private static Logger LOGGER = LoggerFactory.getLogger(MessageReceiver.class);
-
-    @Autowired
-    private LearnRelationService learnRelationService;
 
     @Autowired
     private TutorNodeService tutorNodeService;
 
-    @KafkaListener(topics = "learnRelationAdded")
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @KafkaListener(topics = "learnRelationAdded", group = "relation-service")
     public void receiveMessage(String learnRelationJson) {
         LOGGER.info("Received <" + learnRelationJson + ">");
 
-        LearnRelationRawData learningRelation = null;
+        LearnRelationRawDataDTO learningRelation = new LearnRelationRawDataDTO();
         try {
-            learningRelation = mapper.readValue(learnRelationJson, LearnRelationRawData.class);
+            learningRelation = objectMapper.readValue(learnRelationJson, LearnRelationRawDataDTO.class);
         } catch (IOException e) {
-            LOGGER.error("Could not read json value");
+            LOGGER.error("Could not read json value", e);
         }
         handleNewRelation(learningRelation);
 
     }
 
     @Transactional
-    private void handleNewRelation(LearnRelationRawData learnRelationRawData) {
+    private void handleNewRelation(LearnRelationRawDataDTO dto) {
         LOGGER.info("Saving to graph");
-        tutorNodeService.processLearnRelationRawData(learnRelationRawData);
-        learnRelationService.saveRelation(learnRelationRawData);
+
+        tutorNodeService.processLearnRelationRawData(dto);
 
     }
 

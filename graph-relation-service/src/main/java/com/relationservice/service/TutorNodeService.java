@@ -1,7 +1,7 @@
 package com.relationservice.service;
 
 import com.relationservice.dao.neo4j.*;
-import com.relationservice.entities.db.LearnRelationRawData;
+import com.relationservice.dto.LearnRelationRawDataDTO;
 import com.relationservice.entities.neo4j.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +35,7 @@ public class TutorNodeService {
     @Autowired
     private IsLearningRelationshipRepository isLearningRelationshipRepository;
 
-    public void processLearnRelationRawData(LearnRelationRawData learnRelationRawData) {
+    public void processLearnRelationRawData(LearnRelationRawDataDTO learnRelationRawData) {
 
         TutorNode student = initStudentNode(learnRelationRawData);
         TutorNode teacher = initTeacherNode(learnRelationRawData);
@@ -54,7 +54,7 @@ public class TutorNodeService {
         IsTeachingRelationship isTeachingRelationship = IsTeachingRelationship.builder()
                 .teacher(teacher)
                 .skill(skill)
-                .startDate(startDate)
+                .startDate(startDate.toString())
                 .build();
 
         isTeachingRelationshipRepository.save(isTeachingRelationship);
@@ -64,13 +64,13 @@ public class TutorNodeService {
         IsLearningRelationship isLearningRelationship = IsLearningRelationship.builder()
                 .student(student)
                 .skill(skill)
-                .startDate(startDate)
+                .startDate(startDate.toString())
                 .build();
 
         isLearningRelationshipRepository.save(isLearningRelationship);
     }
 
-    private SkillNode initSkillNode(LearnRelationRawData learnRelationRawData) {
+    private SkillNode initSkillNode(LearnRelationRawDataDTO learnRelationRawData) {
         String skillName = learnRelationRawData.getSkill().toLowerCase();
 
         SkillNode skillNode;
@@ -93,30 +93,32 @@ public class TutorNodeService {
         return skillNodeRepository.findByName(skillName) != null;
     }
 
-    private void createLearningRelationship(LearnRelationRawData learnRelationRawData, TutorNode student, TutorNode teacher) {
+    private void createLearningRelationship(LearnRelationRawDataDTO learnRelationRawData, TutorNode student, TutorNode teacher) {
         LearningFromRelationship learningFromRelationship = LearningFromRelationship.builder()
                 .skill(learnRelationRawData.getSkill())
                 .skillId(learnRelationRawData.getSkillId())
                 .student(student)
                 .teacher(teacher)
+                .startDate(learnRelationRawData.getStartDate().toString())
                 .build();
         LOGGER.info("Saving learning relationship with id {}", learningFromRelationship.getId());
 
         learningRelationshipRepository.save(learningFromRelationship);
     }
 
-    private void createTeachingRelationship(LearnRelationRawData learnRelationRawData, TutorNode student, TutorNode teacher) {
+    private void createTeachingRelationship(LearnRelationRawDataDTO learnRelationRawData, TutorNode student, TutorNode teacher) {
         TeachingRelationship teachingRelationship = TeachingRelationship.builder()
                 .skill(learnRelationRawData.getSkill())
                 .skillId(learnRelationRawData.getSkillId())
                 .student(student)
                 .teacher(teacher)
+                .startDate(learnRelationRawData.getStartDate().toString())
                 .build();
         LOGGER.info("Saving teaching relationship with id {}", teachingRelationship.getId());
         teachingRelationshipRepository.save(teachingRelationship);
     }
 
-    private TutorNode initTeacherNode(LearnRelationRawData learnRelationRawData) {
+    private TutorNode initTeacherNode(LearnRelationRawDataDTO learnRelationRawData) {
         TutorNode teacher;
         if (!nodeExists(learnRelationRawData.getTeacherUsername())) {
             LOGGER.info("{} does not exists. Creating", learnRelationRawData.getTeacherUsername());
@@ -130,17 +132,17 @@ public class TutorNodeService {
                     .build();
             tutorNodeRepository.save(teacher);
         } else {
-            LOGGER.info("{} doeas not exists. Creating", learnRelationRawData.getTeacherUsername());
+            LOGGER.info("{} doeas not exists. Creating {}", learnRelationRawData.getTeacherUsername());
 
             teacher = tutorNodeRepository.findByUsername(learnRelationRawData.getTeacherUsername());
         }
         return teacher;
     }
 
-    private TutorNode initStudentNode(LearnRelationRawData learnRelationRawData) {
+    private TutorNode initStudentNode(LearnRelationRawDataDTO learnRelationRawData) {
         TutorNode student;
         if (!nodeExists(learnRelationRawData.getStudentUsername())) {
-            LOGGER.info("{} does not exists. Creating", learnRelationRawData.getStudentUsername());
+            LOGGER.info("{} does not exists. Creating {}", learnRelationRawData.getStudentUsername());
             student = TutorNode.builder()
                     .name(learnRelationRawData.getStudentName())
                     .lastName(learnRelationRawData.getStudentLastName())

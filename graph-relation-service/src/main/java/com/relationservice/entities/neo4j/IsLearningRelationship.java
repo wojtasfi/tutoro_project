@@ -9,8 +9,6 @@ import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.RelationshipEntity;
 import org.neo4j.ogm.annotation.StartNode;
 
-import java.time.LocalDate;
-
 /**
  * Created by wojciech on 09.07.17.
  */
@@ -28,7 +26,7 @@ public class IsLearningRelationship {
     @StartNode
     private TutorNode student;
 
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String startDate;
+    private String endDate;
 
 }

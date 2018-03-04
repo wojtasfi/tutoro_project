@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
@@ -52,12 +51,12 @@ public class SkillRest {
     }
 
     @PostMapping("addSkill")
-    public ResponseEntity<String> addSkill(@ModelAttribute SkillForm skillForm,
-                                           Model model) {
+    public ResponseEntity<String> addSkill(@RequestParam SkillForm skillForm) {
 
-        Skill skill = skillService.getSkillById(skillForm.getSkillId());
+        Skill skill = new Skill();
         skill.setName(skillForm.getName());
         skill.setDescription(skillForm.getDescription());
+        skill.setTutorId(skillForm.getTutorId());
 
         String[] stringTags = skillForm.getTags().split(",");
         Set<String> tags = new HashSet<>(Arrays.asList(stringTags));

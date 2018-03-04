@@ -94,6 +94,8 @@ services:
     ports:
       - "17474:7474"
       - "17687:7687"
+    environment:
+     - "neo4j:admin"
     volumes:                  ## adds folder with login/password
       - ./db/dbms:/data/dbms
 
