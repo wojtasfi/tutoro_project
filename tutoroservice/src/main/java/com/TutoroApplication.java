@@ -74,6 +74,7 @@ public class TutoroApplication implements ApplicationRunner {
             Tutor beth = createTestUser("beth");
             Tutor charles = createTestUser("charles");
             Tutor dwayne = createTestUser("dwayne");
+            Tutor elen = createTestUser("elen");
 
             Skill cooking = Skill.builder()
                     .name("cooking")
@@ -109,9 +110,17 @@ public class TutoroApplication implements ApplicationRunner {
                     .startDate(LocalDate.now())
                     .build();
 
+            LearnRelation elenTeachingProgramming = LearnRelation.builder()
+                    .skillId(programing.getId())
+                    .teacherId(elen.getId())
+                    .studentId(adam.getId())
+                    .startDate(LocalDate.now())
+                    .build();
+
             learnRelationService.saveLearnRelation(adamTeachingCooking);
             learnRelationService.saveLearnRelation(adamTeachingCooking2);
             learnRelationService.saveLearnRelation(dwayneTeachingProgramming);
+            learnRelationService.saveLearnRelation(elenTeachingProgramming);
         }
     }
 

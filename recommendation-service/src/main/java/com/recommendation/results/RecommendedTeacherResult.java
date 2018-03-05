@@ -6,7 +6,6 @@ import org.springframework.data.neo4j.annotation.QueryResult;
 @QueryResult
 @Data
 public class RecommendedTeacherResult {
-    Long teacherId;
+    String teacherUsername;
     String skillName;
-    Long skillId;
 }
