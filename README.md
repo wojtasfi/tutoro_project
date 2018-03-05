@@ -23,7 +23,7 @@ recommendation-service
 http://localhost:8086/swagger-ui.html#/
 Get recommended skills and teachers
 
-Please see the skill_model.jpeg and teacher_model.jpeg.
+Please see the skill_model.png and teacher_model.png.
 
 Skill recommendation explanation: "If user A is learining skill X, user B is also learning skill B and additionally C- recommend skill C
 to user A"
