@@ -8,10 +8,10 @@ spring:
       server:
         encrypt.enabled: false
         git:
-          uri: https://gitlab.com/wojtasfi/tutoro-config.git
+          uri: https://gitlab.com/tutoro/tutoro-config.git
           searchPaths: zuulservice, tutoroservice, graph-relation-service, authentication-service, recommendation-service
-          username: wojtasfi
-          password: POLlop123
+          username: tutoro
+          password: tutoroapp
 
 #Setting logging levels
 logging:
