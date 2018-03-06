@@ -33,22 +33,28 @@ The application is adding test data on startup.
 
 ### Main microservices:
 
-tutoroservice:
+#### tutoroservice:
 
 http://localhost:8090/swagger-ui.html#/
 
 All main functionality: adding new user, edit profile, add skills, search for other tutors by skill, adding relation
-betwenn student and teacher.
+between student and teacher.
 
 
-graph-relation-service
+#### graph-relation-service
+
 http://localhost:8085/swagger-ui.html#/
+
 Takes care of writes relationships to neo4j and transforming them before of course.
 
 
-recommendation-service
+#### recommendation-service
+
 http://localhost:8086/swagger-ui.html#/
+
 Get recommended skills and teachers
+
+
 
 Please see the skill_model.png and teacher_model.png.
 
