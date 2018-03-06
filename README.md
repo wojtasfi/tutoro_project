@@ -63,3 +63,9 @@ recommend skill Y to user A".
 
 Teacher recommendation: "If tutor A is learning from tutor B skill X and tutor C is also teaching skill X then recommend
 tutor C as a teacher to tutor A".
+
+## FUTURE
+
+I plan to add more features to recommendation service, make searching based on Elasticsearch. Additionally I would like to
+evaluate rank of the tutors by applying some graph algorithms like Page Rank- I will implement it using Apache Spark
+with GraphX.
