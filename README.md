@@ -1,4 +1,4 @@
-##SHORT DESCRIPTION
+## SHORT DESCRIPTION
 Tutoro is my ongoing project which helps me to develop my skills. The basic idea is to create service where people can
 share their passions by teaching them to someone and for people who want to learn new skills from hobbyist and
 professionals. Moreover I am developing recommendation service which will help to find new skills or teachers. This is
@@ -6,6 +6,8 @@ currently the backend part of the project. I started developing frontend in Angu
 
 Technologies/solutions:
 Java 8
+
+
 Spring Framework
 JPA
 neo4j
@@ -14,7 +16,7 @@ microservices (Netflix stack)
 oAuth2 (with JWT)
 config-server
 
-##HOW TO RUN APPLICATION
+## HOW TO RUN APPLICATION
 Please clone repository, cd into tutoro/docker/common and then docker-compose up. After 2 minutes everything is up and
 ready- now you can play with the API by yourself.
 
