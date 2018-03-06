@@ -25,7 +25,7 @@ Get recommended skills and teachers
 
 Please see the skill_model.png and teacher_model.png.
 
-Skill recommendation explanation: "If user A is learining skill X, user B is also learning skill B and additionally C- recommend skill C
+Skill recommendation explanation: "If user A is learning skill X and user B is also learning skill X and additionally Y- recommend skill Y
 to user A"
 
 Teacher recommendation: "If tutor A is learning from tutor B skill X and tutor C is also teaching skill X then recommend tutor C as a
