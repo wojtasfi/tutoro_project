@@ -2,6 +2,7 @@ package com.tutoro.rest;
 
 import com.tutoro.service.TutorService;
 import com.tutoro.service.UserService;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,19 +20,20 @@ public class ValidationRest {
     private UserService userService;
 
     @GetMapping("/username")
-    private Boolean checkUsername(@RequestParam String username) {
-        if (tutorService.checkIfTutorExists(username)) {
-            return false;
+    private UsernameExists checkUsername(@RequestParam String username) {
+        if (!tutorService.checkIfTutorExists(username)) {
+            return null;
         }
-        return true;
+
+        return new UsernameExists();
     }
 
     @GetMapping("/email")
-    private ResponseEntity checkEmail(@RequestParam String email) {
-        if (tutorService.checkIfEmailExists(email)) {
-            return ResponseEntity.badRequest().body("Duplicated");
+    private EmailExists checkEmail(@RequestParam String email) {
+        if (!tutorService.checkIfEmailExists(email)) {
+            return null;
         }
-        return ResponseEntity.ok("Unique");
+        return new EmailExists();
     }
 
     @GetMapping("/{tokenString}")
@@ -43,4 +45,14 @@ public class ValidationRest {
         }
         return ResponseEntity.badRequest().body("Token not valid");
     }
+}
+
+@Data
+class UsernameExists {
+    private boolean usernameExists = true;
+}
+
+@Data
+class EmailExists {
+    private boolean emailExists = true;
 }
