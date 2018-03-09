@@ -29,7 +29,9 @@ config-server
 Please clone repository, cd into tutoro/docker/common and then docker-compose up. After 2 minutes everything is up and
 ready- now you can play with the API by yourself.
 
-The application is adding test data on startup.
+The application is adding test data on startup. Note that it also start with default profile which disables authentciation
+for testing purposes (see below). Of course all api is accesible also through Zuul, for example token:
+http://localhost:5555/api/auth/oauth/token
 
 ### Main microservices:
 
