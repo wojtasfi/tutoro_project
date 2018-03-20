@@ -60,7 +60,7 @@ public class TestUtils {
                 "CREATE (student)-[r:LEARNING_FROM]->(teacher)", params);
     }
 
-    public void createTeachingRelation(String studentUsername, String teacherUsername) {
+    public void createTeachingRelation(String teacherUsername, String studentUsername) {
 
         Map<String, String> params = new HashMap<>();
         params.put("studentUsername", studentUsername);
