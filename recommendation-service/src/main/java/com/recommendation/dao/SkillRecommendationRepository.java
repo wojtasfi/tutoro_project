@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface SkillRecommendationRepository extends GraphRepository<Node> {
 
-    @Query("MATCH (t:TutorNode) where t.username={0} WITH t as tutot MATCH (tutor)-[:IS_LEARNING]->(:SkillNode)<-[:IS_LEARNING]-" +
+    @Query("MATCH (t:TutorNode) where t.username={0} WITH t as tutor MATCH (tutor)-[:IS_LEARNING]->(:SkillNode)<-[:IS_LEARNING]-" +
             "(:TutorNode)-[:IS_LEARNING]->(recommendedSkill) " +
             "RETURN recommendedSkill.name as skillName, tutor.username AS tutorUsername")
     List<RecommendedSkillResult> findRecommendedSkills(String tutorUsername);
