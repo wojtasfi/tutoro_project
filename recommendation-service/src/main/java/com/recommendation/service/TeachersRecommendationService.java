@@ -18,7 +18,6 @@ public class TeachersRecommendationService {
 
         List<RecommendedTeacherResult> results = teacherRecommendationRepository.getRecommendedTeachers(tutorUsername);
 
-
         List<RecommendedTeachersDto> recommendedTeachersDtos = new ArrayList<>();
 
         Map<String, List<String>> teachersWithSkills = new HashMap<>();
@@ -41,6 +40,7 @@ public class TeachersRecommendationService {
             RecommendedTeachersDto dto = new RecommendedTeachersDto();
             dto.setTeacherUsername(entry.getKey());
             dto.setSkillNames(entry.getValue());
+            recommendedTeachersDtos.add(dto);
         }
         return recommendedTeachersDtos;
     }
