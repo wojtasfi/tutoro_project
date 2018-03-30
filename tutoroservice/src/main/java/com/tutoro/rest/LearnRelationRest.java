@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
@@ -63,7 +64,13 @@ public class LearnRelationRest {
         } catch (UnsupportedEncodingException e) {
             LOGGER.error("Could not encode message", e);
         }
-        return ResponseEntity.created(URI.create("/learn_relations" + learnRelation.getId())).build();
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(learnRelation.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
 
     }
 
